@@ -1,0 +1,16 @@
+.advertisements-page {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 600px;
+}
+
+.mensagem-de-aviso {
+  color: antiquewhite;
+}
+.advertisements-list {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 30px;
+}

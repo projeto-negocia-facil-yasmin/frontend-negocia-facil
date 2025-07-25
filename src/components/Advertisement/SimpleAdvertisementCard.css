@@ -1,0 +1,39 @@
+.user-advertisement-card {
+    max-height: fit-content;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 20px;
+    justify-content: space-between;
+  }
+  
+  .card-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.card-subinfo {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 14px;
+  color: #555;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+p, h2{
+  color: #333;
+  text-align: left;
+}
+
+.advertisement-dropdown{
+    align-self: last baseline;
+}
