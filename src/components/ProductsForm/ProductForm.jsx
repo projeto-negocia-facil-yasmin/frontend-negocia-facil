@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import styles from "./ProductForm.module.css";
-import { ProductAPI } from "../../services/ProductAPI";
-import { toast } from "react-toastify";
+import styles from './ProductForm.module.css';
+import { ProductAPI } from '../../services/ProductAPI';
+import { toast } from 'react-toastify';
 
 function ProductForm({ productToEdit, onCancel, onSave }) {
   const [title, setTitle] = useState("");

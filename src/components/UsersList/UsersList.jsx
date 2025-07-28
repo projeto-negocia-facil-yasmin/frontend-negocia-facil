@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import UserCard from "../UserCard/UserCard.jsx";
-import Button from '../Button/Button.jsx'
-import styles from './UsersList.module.css'
-import {useNavigate} from "react-router-dom";
+import UserCard from "../UserCard/UserCard";
+import Button from "../Button/Button";
+import styles from './UsersList.module.css';
+import { useNavigate } from "react-router-dom";
 
 function UsersList() {
     const navigate = useNavigate();

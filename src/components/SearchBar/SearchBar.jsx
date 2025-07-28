@@ -1,6 +1,6 @@
-import styles from './SearchBar.module.css'
-import {Search} from 'lucide-react'
-import {useState} from "react";
+import styles from './SearchBar.module.css';
+import { Search } from 'lucide-react';
+import { useState } from "react";
 
 function SearchBar(){
 

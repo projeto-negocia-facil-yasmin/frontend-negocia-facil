@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "../components/Sidebar/Sidebar";
-import ProductControls from "../components/Products/ProductControls";
-import ProductForm from "../components/Products/ProductForm";
-import ProductList from "../components/Products/ProductList";
+import ProductControls from "../components/ProductsControls/ProductControls";
+import ProductForm from "../components/ProductForm/ProductForm";
+import ProductList from "../components/ProductList/ProductList";
 import { ProductAPI } from "../services/ProductAPI";
 import "../App.css";
 

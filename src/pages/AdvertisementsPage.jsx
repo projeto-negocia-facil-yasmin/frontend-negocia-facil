@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { AdvertisementAPI } from "../services/AdvertisementAPI";
-import SimpleAdvertisementCard from "../components/Advertisement/SimpleAdvertisementCard";
+import SimpleAdvertisementCard from "../components/SimpleAdvertisementCard/SimpleAdvertisementCard";
 import './AdvertisementsPage.css';
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar/Sidebar.jsx";

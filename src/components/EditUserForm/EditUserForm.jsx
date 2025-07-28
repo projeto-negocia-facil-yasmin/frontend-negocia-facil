@@ -1,8 +1,8 @@
-import styles from './EditUserForm.module.css'
-import Button from "../Button/Button.jsx"
-import {useState, useEffect} from "react";
-import { ErrorBoundary } from "react-error-boundary"
-import {useNavigate} from "react-router-dom";
+import styles from './EditUserForm.module.css';
+import Button from "../Button/Button";
+import { useState, useEffect } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import { useNavigate } from "react-router-dom";
 
 export default function EditUserForm({ user, action }) {
 

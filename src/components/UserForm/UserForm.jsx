@@ -1,7 +1,7 @@
-import styles from './UserForm.module.css'
-import Button from "../Button/Button.jsx"
-import {ErrorBoundary} from "react-error-boundary";
-import {useNavigate} from "react-router-dom";
+import styles from './UserForm.module.css';
+import Button from "../Button/Button";
+import { ErrorBoundary } from "react-error-boundary";
+import { useNavigate } from "react-router-dom";
 
 function UserForm({action}){
     const navigate = useNavigate();

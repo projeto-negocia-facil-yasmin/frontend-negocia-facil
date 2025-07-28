@@ -1,7 +1,7 @@
-import {Home, Package, Tag, Shield, LogOut, Users} from "lucide-react";
-import SidebarHeader from "./SidebarHeader/SidebarHeader.jsx";
-import styles from './Sidebar.module.css'
-import {NavLink} from "react-router-dom";
+import { Home, Package, Tag, Shield, LogOut, Users } from "lucide-react";
+import SidebarHeader from "./SidebarHeader/SidebarHeader";
+import styles from './Sidebar.module.css';
+import { NavLink } from "react-router-dom";
 function Sidebar(){
 
     const menuItems = [
