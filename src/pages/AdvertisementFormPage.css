@@ -1,0 +1,14 @@
+.advertisements-page-container {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 20px;
+  width: 100%;
+}
+
+.advertisement-edition {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+}

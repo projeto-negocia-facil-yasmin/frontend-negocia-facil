@@ -30,6 +30,12 @@ export default function AppRoutes(){
                     <Route path="register" element={<Register />} />
                 </Route>
 
+                <Route exact path="/home" element={<Home />} />
+                <Route path="/advertisements" element={<AdvertisementsPage />} />
+                <Route path="/advertisements/new" element={<AdvertisementFormPage />} />
+                <Route path='/edit/:id' element={<AdvertisementFormPage />} />
+                <Route path='/products' element={<ProductsPage />} />
+
             </Routes>
 
         </BrowserRouter>

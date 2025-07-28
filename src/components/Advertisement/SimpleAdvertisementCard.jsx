@@ -2,7 +2,7 @@ import './SimpleAdvertisementCard.css';
 import { MoreVertical } from "lucide-react"; 
 import { useState } from "react";
 
-function UserAdvertisementCard({
+function SimpleAdvertisementCard({
     id,
     creationTime,
     itemsCount,
@@ -25,7 +25,7 @@ function UserAdvertisementCard({
                       <MoreVertical />
                       {showMenu && (
                         <div>
-                          <button onClick={() => onEdit}>
+                          <button onClick={onEdit}>
                             Editar
                           </button>
                           <button onClick={() => onDelete(id)}>
@@ -49,4 +49,4 @@ function UserAdvertisementCard({
   );
 }
 
-export default UserAdvertisementCard;
+export default SimpleAdvertisementCard;

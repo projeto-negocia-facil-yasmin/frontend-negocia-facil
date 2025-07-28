@@ -105,6 +105,8 @@ function ProductsPage() {
               products={filtered}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              showMenuOptions={true}
+              showTrashButton={false}
             />
           </>
         ) : (

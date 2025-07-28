@@ -1,0 +1,36 @@
+p, label {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+h3 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.advertisement-form {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-description {
+    display: flex;
+    flex-direction: column;
+    align-content:stretch;
+    align-items: self-start;
+    gap: 10px;
+}
+
+textarea {
+    width: 50%;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: both;
+}

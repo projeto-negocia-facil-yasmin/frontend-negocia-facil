@@ -2,8 +2,13 @@ import { useState, useEffect } from "react";
 import { AdvertisementAPI } from "../services/AdvertisementAPI";
 import SimpleAdvertisementCard from "../components/Advertisement/SimpleAdvertisementCard";
 import './AdvertisementsPage.css';
+import { useNavigate } from "react-router-dom";
+import Sidebar from "../components/Sidebar/Sidebar.jsx";
+import Button from "../components/Button/Button.jsx";
 
 function AdvertisementsPage() {
+
+    const navigate = useNavigate();
     
     const [advertisements, setAdvertisements] = useState([]);
 
@@ -14,7 +19,6 @@ function AdvertisementsPage() {
     async function loadAdvertisements() {
        
         const data = await AdvertisementAPI.getAll();
-        console.log(data);
         setAdvertisements(data);
         
     }
@@ -28,9 +32,18 @@ function AdvertisementsPage() {
             console.error(error.message);
         }
     }
+
+    const handleEdit = (id) => {
+        navigate(`/edit/${id}`);
+    }
+
+    const handleNewAdvertisement = () => {
+        navigate("/advertisements/new")
+    }
     
     return (
-        <>
+        <div className="advertisements-page-container">
+            <Sidebar />
             <div className="advertisements-page">
                 {advertisements.length === 0 ? (
                     <p className="mensagem-de-aviso">Nenhum anúncio encontrado.</p>
@@ -44,12 +57,14 @@ function AdvertisementsPage() {
                         creationTime={ad.createdAt} 
                         description={ad.description} 
                         itemsCount={ad.products.length}
-                        onDelete={() => handleDelete(ad.id)}/>
+                        onDelete={() => handleDelete(ad.id)}
+                        onEdit={() => handleEdit(ad.id)}/>
                     ))}
                 </div>
                 )}
+                <Button text={"Novo anúncio"} action={handleNewAdvertisement}/>
             </div>
-        </>
+        </div>
     );
 }
 export default AdvertisementsPage;

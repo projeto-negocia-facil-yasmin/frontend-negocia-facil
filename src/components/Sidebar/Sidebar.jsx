@@ -7,7 +7,7 @@ function Sidebar(){
     const menuItems = [
         { icon: <Home size={20} />, label: "Início", path: ""  },
         { icon: <Package size={20} />, label: "Produtos", path: ""  },
-        { icon: <Tag size={20} />, label: "Anúncios", path: "" },
+        { icon: <Tag size={20} />, label: "Anúncios", path: "/advertisements" },
         { icon: <Shield size={20} />, label: "Regras", path: ""   },
         { icon: <Users size={20} />, label: "Usuários", path: "/admin/users" }
     ];
