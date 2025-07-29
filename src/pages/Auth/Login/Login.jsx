@@ -1,10 +1,10 @@
 import styles from "./Login.module.css"
 import axios from "axios"
-import {useState} from "react";
-import {useNavigate, Link} from "react-router-dom";
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import Button from "../../../components/Button/Button.jsx";
-export default function Login(){
 
+export default function Login() {
     const navigate = useNavigate();
 
     const [email, setEmail] = useState("");
@@ -19,16 +19,21 @@ export default function Login(){
                 password: password
             });
 
-            console.log(response);
-
             const token = response.data.accessToken;
+            const roles = response.data.roles ?? [];
 
             localStorage.setItem("token", token);
+            localStorage.setItem("roles", JSON.stringify(roles));
 
-            navigate("/admin/");
+            if (roles.includes("ADMIN")) {
+                navigate("/admin/");
+            } else {
+                navigate("/user/");
+            }
 
         } catch (err) {
             console.error("Erro ao fazer login:", err);
+            alert("Usuário ou senha inválidos.");
         }
     };
 
@@ -42,7 +47,7 @@ export default function Login(){
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className={styles.input}
-                    required={true}
+                    required
                 />
                 <input
                     type="password"
@@ -50,13 +55,13 @@ export default function Login(){
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     className={styles.input}
-                    required={true}
+                    required
                 />
-                <Button type={"submit"} text={"Entrar"}/>
+                <Button type="submit" text="Entrar" />
                 <Link to="/auth/register" className={styles.link}>
                     Ainda não tem uma conta? Cadastre-se aqui
                 </Link>
             </form>
         </div>
-    )
+    );
 }

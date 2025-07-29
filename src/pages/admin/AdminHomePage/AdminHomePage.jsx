@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import SidebarLayout from "../../../layouts/admin/SidebarLayout/SidebarLayout.jsx";
+import SidebarLayout from "../../../layouts/SidebarLayout/SidebarLayout.jsx";
 export default function AdminHomePage() {
     return (
         <SidebarLayout>

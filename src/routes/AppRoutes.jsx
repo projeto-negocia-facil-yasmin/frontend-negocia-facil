@@ -1,5 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Navigate } from "react-router";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "../pages/Auth/Login/Login.jsx";
 import Register from "../pages/Auth/Register/Register.jsx";
 import EditUsersAdminPage from "../pages/admin/EditUsersAdminPage/EditUsersAdminPage.jsx";
@@ -7,6 +6,7 @@ import ListUsersAdminPage from "../pages/admin/ListUsersAdminPage/ListUsersAdmin
 import CreateUsersAdminPage from "../pages/admin/CreateUsersAdminPage/CreateUsersAdminPage.jsx";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage.jsx";
 import AdminHomePage from "../pages/admin/AdminHomePage/AdminHomePage.jsx";
+import UserHomePage from "../pages/user/UserHomePage/UserHomePage.jsx";
 import Home from "../pages/Home.jsx";
 import AdvertisementsPage from "../pages/AdvertisementsPage.jsx";
 import { AdvertisementFormPage } from "../pages/AdvertisementFormPage.jsx";
@@ -26,6 +26,8 @@ export default function AppRoutes() {
             <Route path="register" element={<CreateUsersAdminPage />} />
           </Route>
         </Route>
+
+        <Route path="user" element={<UserHomePage />} />
 
         <Route path="auth">
           <Route path="login" element={<Login />} />
