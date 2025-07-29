@@ -1,7 +1,7 @@
 import styles from "./Register.module.css";
 import { useState } from "react";
 import Button from "../../../components/Button/Button.jsx";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function Register() {
@@ -34,7 +34,6 @@ export default function Register() {
         }
     };
 
-
     return (
         <div className={styles.container}>
             <form onSubmit={handleRegister} className={styles.form}>
@@ -47,7 +46,7 @@ export default function Register() {
                     onChange={(e) => setUsername(e.target.value)}
                     className={styles.input}
                     required
-                    pattern="^[a-zA-Z0-9._%+-]+@ifpb\.edu\.br$"
+                    pattern="^[a-zA-Z0-9._%+\-]+@ifpb\.edu\.br$"
                     title="O email deve terminar com @ifpb.edu.br"
                 />
 
@@ -80,7 +79,7 @@ export default function Register() {
                     required
                 />
 
-                <Button type={"submit"} text={"Cadastrar"}/>
+                <Button type={"submit"} text={"Cadastrar"} />
                 <Link to="/auth/login" className={styles.link}>
                     Já tem uma conta? Voltar para login
                 </Link>

@@ -1,11 +1,9 @@
 import Sidebar from "../components/Sidebar/Sidebar.jsx";
-import AdvertisementForm from "../components/Advertisement/AdvertisementForm";
+import AdvertisementForm from "../components/AdvertisementForm/AdvertisementForm.jsx";
 import { AdvertisementAPI } from "../services/AdvertisementAPI";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import './AdvertisementFormPage.css';
-
-
 export function AdvertisementFormPage() {
 
     const { id } = useParams();
@@ -17,7 +15,6 @@ export function AdvertisementFormPage() {
         if (id) {
             loadAdvertisement();
         } else {
-            // Novo anúncio
             setAdvertisement({
                 description: "",
                 products: [],
