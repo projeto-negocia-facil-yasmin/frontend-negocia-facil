@@ -34,16 +34,15 @@ function AdvertisementsPage() {
     }
 
     const handleEdit = (id) => {
-        navigate(`/edit/${id}`);
+        navigate(`${id}`)
     }
 
     const handleNewAdvertisement = () => {
-        navigate("/advertisements/new")
+        navigate("new")
     }
     
     return (
         <div className="advertisements-page-container">
-            <Sidebar />
             <div className="advertisements-page">
                 {advertisements.length === 0 ? (
                     <p className="mensagem-de-aviso">Nenhum anúncio encontrado.</p>

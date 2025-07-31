@@ -30,17 +30,24 @@ export default function AppRoutes() {
             <Route path=":id" element={<EditUsersAdminPage />} />
             <Route path="register" element={<CreateUsersAdminPage />} />
           </Route>
+
           <Route path="products" element={<ProductsPage />} />
-          <Route path="advertisements" element={<AdvertisementsPage />} />
-          <Route path="advertisements/new" element={<AdvertisementFormPage />} />
-          <Route path="edit/:id" element={<AdvertisementFormPage />} />
+
+          <Route path="advertisements">
+            <Route index element={<AdvertisementsPage />} />
+            <Route path="new" element={<AdvertisementFormPage />} />
+            <Route path=":id" element={<AdvertisementFormPage />} />
+          </Route>
         </Route>
 
         <Route path="user" element={<UserHomePage />}>
           <Route path="products" element={<ProductsPage />} />
-          <Route path="advertisements" element={<AdvertisementsPage />} />
-          <Route path="advertisements/new" element={<AdvertisementFormPage />} />
-          <Route path="edit/:id" element={<AdvertisementFormPage />} />
+
+          <Route path="advertisements">
+            <Route index element={<AdvertisementsPage />} />
+            <Route path="new" element={<AdvertisementFormPage />} />
+            <Route path=":id" element={<AdvertisementFormPage />} />
+          </Route>
         </Route>
 
         <Route path="home" element={<Home />} />

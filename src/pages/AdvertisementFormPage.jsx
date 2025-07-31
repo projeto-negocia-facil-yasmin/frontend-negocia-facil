@@ -10,7 +10,6 @@ export function AdvertisementFormPage() {
     const [advertisement, setAdvertisement] = useState({});
     const navigate = useNavigate();
 
-
     useEffect(() => {
         if (id) {
             loadAdvertisement();
@@ -21,13 +20,7 @@ export function AdvertisementFormPage() {
                 createdAt: new Date().toISOString(),
             });
         }
-    }, [advertisement.id]);
-
-    async function loadAdvertisement() {
-           
-        const data = await AdvertisementAPI.getById(id);
-        setAdvertisement(data);            
-    }
+    }, [id]);
 
     async function handleUpdate(id, newAdvertisement) {
         try {
@@ -39,7 +32,7 @@ export function AdvertisementFormPage() {
                 const created = await AdvertisementAPI.create(newAdvertisement);
                 alert("Anúncio criado com sucesso!");
                 console.log(created);
-                navigate(`/advertisements`);
+                navigate("..");
             }
         } catch (error) {
             console.error(error.message);
@@ -49,13 +42,12 @@ export function AdvertisementFormPage() {
 
     return (
         <div className="advertisements-page-container">
-            <Sidebar />
             <div className="advertisement-edition">
                 <h1>Formulário de Anúncio</h1>
                 <AdvertisementForm
-                    advertisement={advertisement} 
+                    advertisement={advertisement}
                     onUpdate={handleUpdate}
-                    isNew={!id} />        
+                    isNew={!id} />
             </div>
         </div>
     );
