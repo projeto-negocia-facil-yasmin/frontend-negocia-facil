@@ -3,16 +3,19 @@ import SidebarHeader from "./SidebarHeader/SidebarHeader";
 import styles from './Sidebar.module.css';
 import { NavLink } from "react-router-dom";
 
-function Sidebar({ roles, userName, imgUrl }) {
+function Sidebar({ roles = [], userName, imgUrl }) {
   const isAdmin = roles.includes("ADMIN");
+  const basePath = isAdmin ? "/admin" : "/user";
 
   const menuItems = [
-    { icon: <Home size={20} />, label: "Início", path: "/home" },
-    { icon: <Package size={20} />, label: "Produtos", path: "/products" },
-    { icon: <Tag size={20} />, label: "Anúncios", path: "/advertisements" },
-    { icon: <Shield size={20} />, label: "Regras", path: "/rules" },
+    { icon: <Home size={20} />, label: "Início", path: `${basePath}` },
+    { icon: <Package size={20} />, label: "Produtos", path: `${basePath}/products` },
+    { icon: <Tag size={20} />, label: "Anúncios", path: `${basePath}/advertisements` },
+    { icon: <Shield size={20} />, label: "Regras", path: `${basePath}/rules` },
 
-    ...(isAdmin ? [{ icon: <Users size={20} />, label: "Usuários", path: "/admin/users" }] : []),
+    ...(isAdmin
+      ? [{ icon: <Users size={20} />, label: "Usuários", path: `${basePath}/users` }]
+      : []),
   ];
 
   return (
@@ -27,7 +30,7 @@ function Sidebar({ roles, userName, imgUrl }) {
         ))}
       </nav>
       <NavLink className={styles.link} to={"/auth/login"}>
-        <LogOut className={styles.svgImage} size={20} />{" "}
+        <LogOut className={styles.svgImage} size={20} />
         <span className={styles.text}>Sair</span>
       </NavLink>
     </aside>

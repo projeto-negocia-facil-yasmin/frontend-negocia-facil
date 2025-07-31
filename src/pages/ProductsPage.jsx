@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Sidebar from "../components/Sidebar/Sidebar";
 import ProductControls from "../components/ProductsControls/ProductControls";
 import ProductForm from "../components/ProductForm/ProductForm";
 import ProductList from "../components/ProductList/ProductList";
@@ -21,7 +20,18 @@ function ProductsPage() {
   async function loadProducts() {
     try {
       const data = await ProductAPI.getAll();
-      setProducts(data);
+      console.log("raw products payload:", data);
+
+      let resolved = [];
+      if (Array.isArray(data)) {
+        resolved = data;
+      } else if (data && Array.isArray(data.content)) {
+        resolved = data.content;
+      } else {
+        console.warn("Formato inesperado de produtos recebido:", data);
+      }
+
+      setProducts(resolved);
     } catch (error) {
       toast.error(error.message);
     }
@@ -82,45 +92,43 @@ function ProductsPage() {
     setEditingProduct(null);
   };
 
-  const filtered = products.filter((p) =>
-    p.title.toLowerCase().includes(search.toLowerCase())
-  );
+  const filtered = Array.isArray(products)
+    ? products.filter((p) =>
+        (p.title || "").toLowerCase().includes(search.toLowerCase())
+      )
+    : [];
 
   return (
-    <div className="app">
-      <Sidebar />
-
-      <div className="main-content">
-        {!showForm ? (
-          <>
-            <ProductControls
-              searchValue={search}
-              onSearchChange={setSearch}
-              onAddClick={() => {
-                setEditingProduct(null);
-                setShowForm(true);
-              }}
-            />
-            <ProductList
-              products={filtered}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-              showMenuOptions={true}
-              showTrashButton={false}
-            />
-          </>
-        ) : (
-          <ProductForm
-            productToEdit={editingProduct}
-            onSave={async () => {
-              await loadProducts();
-              setShowForm(false);
+    <div className="main-content">
+      {!showForm ? (
+        <>
+          <ProductControls
+            searchValue={search}
+            onSearchChange={setSearch}
+            onAddClick={() => {
               setEditingProduct(null);
+              setShowForm(true);
             }}
-            onCancel={handleCancel}
           />
-        )}
-      </div>
+          <ProductList
+            products={filtered}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            showMenuOptions={true}
+            showTrashButton={false}
+          />
+        </>
+      ) : (
+        <ProductForm
+          productToEdit={editingProduct}
+          onSave={async (saved) => {
+            await loadProducts();
+            setShowForm(false);
+            setEditingProduct(null);
+          }}
+          onCancel={handleCancel}
+        />
+      )}
 
       <ToastContainer
         position="top-right"

@@ -1,8 +1,8 @@
 .controls-container {
   position: relative;
   width: 100%;
-  left: 83px;
-  padding: 10px;
+  left: 3px;
+  padding: 20px;
   max-width: 800px;
   display: flex;
   justify-content: center;
