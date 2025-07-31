@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import { AdvertisementAPI } from "../services/AdvertisementAPI";
-import SimpleAdvertisementCard from "../components/SimpleAdvertisementCard/SimpleAdvertisementCard";
+import { AdvertisementAPI } from "../../services/AdvertisementAPI.js";
+import SimpleAdvertisementCard from "../../components/SimpleAdvertisementCard/SimpleAdvertisementCard.jsx";
 import './AdvertisementsPage.css';
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../components/Sidebar/Sidebar.jsx";
-import Button from "../components/Button/Button.jsx";
+import Button from "../../components/Button/Button.jsx";
 
 function AdvertisementsPage() {
 

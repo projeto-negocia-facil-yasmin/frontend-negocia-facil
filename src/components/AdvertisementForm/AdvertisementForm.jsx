@@ -17,19 +17,19 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
     setDescription(advertisement.description || "");
   }, [advertisement]);
 
-  function updateAdvertisement(event) {
+  async function updateAdvertisement(event) {
     event.preventDefault();
     if (products.length === 0) {
       alert("Adicione pelo menos um produto ao anúncio antes de salvar.");
       return;
     }
     const userId = products[0]?.userId;
-
+    
     advertisement.description = description;
     advertisement.products = products;
     advertisement.advertiser = { id: userId };
-    onUpdate(advertisement.id, advertisement);
-    navigate("/advertisements");
+
+    await onUpdate(advertisement.id, advertisement);
   }
 
   const removeProduct = (productId) => {
@@ -80,7 +80,11 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
       )}
 
       <ProductSelection selectedProducts={products} onSelect={setProducts} />
-      <Button type="button" text="Cancelar" action={() => navigate("/advertisements")} />
+      <Button
+        type="button"
+        text="Cancelar"
+        action={() => navigate("..", { replace: true })}
+      />
     </div>
   );
 }

@@ -1,0 +1,61 @@
+import AdvertisementForm from "../../components/AdvertisementForm/AdvertisementForm.jsx";
+import { AdvertisementAPI } from "../../services/AdvertisementAPI";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import './AdvertisementFormPage.css';
+
+export function AdvertisementFormPage() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  const [advertisement, setAdvertisement] = useState({
+    description: "",
+    products: [],
+    createdAt: new Date().toISOString(),
+  });
+
+  useEffect(() => {
+    if (id) {
+      loadAdvertisement();
+    }
+  }, [id]);
+
+  async function loadAdvertisement() {
+    try {
+      const data = await AdvertisementAPI.getById(id);
+      setAdvertisement(data);
+    } catch (error) {
+      alert("Erro ao carregar anúncio.");
+      console.error(error);
+    }
+  }
+
+  async function handleUpdate(id, newAdvertisement) {
+    try {
+      if (id) {
+        await AdvertisementAPI.update(id, newAdvertisement);
+        alert("Anúncio atualizado com sucesso!");
+      } else {
+        await AdvertisementAPI.create(newAdvertisement);
+        alert("Anúncio criado com sucesso!");
+      }
+      navigate("..", { replace: true });
+    } catch (error) {
+      alert("Erro ao salvar anúncio.");
+      console.error(error.message);
+    }
+  }
+
+  return (
+    <div className="advertisements-page-container">
+      <div className="advertisement-edition">
+        <h1>Formulário de Anúncio</h1>
+        <AdvertisementForm
+          advertisement={advertisement}
+          onUpdate={handleUpdate}
+          isNew={!id}
+        />
+      </div>
+    </div>
+  );
+}

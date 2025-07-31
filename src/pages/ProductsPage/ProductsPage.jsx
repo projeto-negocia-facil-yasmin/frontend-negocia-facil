@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ProductControls from "../components/ProductsControls/ProductControls";
-import ProductForm from "../components/ProductForm/ProductForm";
-import ProductList from "../components/ProductList/ProductList";
-import { ProductAPI } from "../services/ProductAPI";
-import "../App.css";
+import ProductControls from "../../components/ProductsControls/ProductControls";
+import ProductForm from "../../components/ProductForm/ProductForm";
+import ProductList from "../../components/ProductList/ProductList";
+import { ProductAPI } from "../../services/ProductAPI";
+import "../../App.css";
 
 function ProductsPage() {
   const [products, setProducts] = useState([]);

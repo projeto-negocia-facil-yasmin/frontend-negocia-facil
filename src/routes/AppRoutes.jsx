@@ -1,15 +1,15 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "../pages/Auth/Login/Login.jsx";
 import Register from "../pages/Auth/Register/Register.jsx";
-import AdminHomePage from "../pages/admin/AdminHomePage/AdminHomePage.jsx";
-import EditUsersAdminPage from "../pages/admin/EditUsersAdminPage/EditUsersAdminPage.jsx";
-import ListUsersAdminPage from "../pages/admin/ListUsersAdminPage/ListUsersAdminPage.jsx";
-import CreateUsersAdminPage from "../pages/admin/CreateUsersAdminPage/CreateUsersAdminPage.jsx";
-import UserHomePage from "../pages/user/UserHomePage/UserHomePage.jsx";
-import ProductsPage from "../pages/ProductsPage.jsx";
-import AdvertisementsPage from "../pages/AdvertisementsPage.jsx";
-import { AdvertisementFormPage } from "../pages/AdvertisementFormPage.jsx";
-import Home from "../pages/Home.jsx";
+import AdminHomePage from "../pages/Admin/AdminHomePage/AdminHomePage.jsx";
+import EditUsersAdminPage from "../pages/Admin/EditUsersAdminPage/EditUsersAdminPage.jsx";
+import ListUsersAdminPage from "../pages/Admin/ListUsersAdminPage/ListUsersAdminPage.jsx";
+import CreateUsersAdminPage from "../pages/Admin/CreateUsersAdminPage/CreateUsersAdminPage.jsx";
+import UserHomePage from "../pages/User/UserHomePage/UserHomePage.jsx";
+import ProductsPage from "../pages/ProductsPage/ProductsPage.jsx";
+import AdvertisementsPage from "../pages/AdvertisementsPage/AdvertisementsPage.jsx";
+import { AdvertisementFormPage } from "../pages/AdvertisementFormPage/AdvertisementFormPage.jsx";
+import Home from "../pages/Home/Home.jsx";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage.jsx";
 
 export default function AppRoutes() {

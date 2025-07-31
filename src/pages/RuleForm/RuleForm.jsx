@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import api from "../services/api";
+import api from "../../services/api";
 
 export default function RuleForm() {
   const location = useLocation();
@@ -14,7 +14,7 @@ export default function RuleForm() {
     const data = {
       title,
       description,
-      active: true, // você pode ajustar esse valor conforme necessário
+      active: true,
     };
 
     try {
