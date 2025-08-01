@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../../services/api";
+import { RuleAPI } from "../../services/ruleAPI";
+import { isAdmin } from "../../utils/auth";
 
 export default function RulesList() {
   const [rules, setRules] = useState([]);
   const navigate = useNavigate();
+  const admin = isAdmin();
 
   const fetchRules = async () => {
     try {
-      const response = await api.get("/rules");
-      setRules(response.data);
+      const data = await RuleAPI.getAll();
+      setRules(data);
     } catch (error) {
       console.error("Erro ao buscar regras:", error);
     }
   };
 
   const deleteRule = async (id) => {
+    if (!admin) return;
     try {
-      await api.delete(`/rules/${id}`);
+      await RuleAPI.delete(id);
       fetchRules();
     } catch (error) {
       console.error("Erro ao deletar regra:", error);
@@ -32,9 +35,11 @@ export default function RulesList() {
     <div className="container">
       <div className="card">
         <h1>Lista de Regras</h1>
-        <button className="btn" onClick={() => navigate("/nova")}>
-          Nova Regra
-        </button>
+        {admin && (
+          <button className="btn" onClick={() => navigate("new")}>
+            Nova Regra
+          </button>
+        )}
         {rules.length === 0 ? (
           <p>Nenhuma regra encontrada.</p>
         ) : (
@@ -45,20 +50,22 @@ export default function RulesList() {
                   <strong>{rule.title}</strong>
                   <p>{rule.description}</p>
                 </div>
-                <div>
-                  <button
-                    className="btn edit"
-                    onClick={() => navigate("/editar", { state: rule })}
-                  >
-                    Editar
-                  </button>
-                  <button
-                    className="btn delete"
-                    onClick={() => deleteRule(rule.id)}
-                  >
-                    Excluir
-                  </button>
-                </div>
+                {admin && (
+                  <div>
+                    <button
+                      className="btn edit"
+                      onClick={() => navigate("edit", { state: rule })}
+                    >
+                      Editar
+                    </button>
+                    <button
+                      className="btn delete"
+                      onClick={() => deleteRule(rule.id)}
+                    >
+                      Excluir
+                    </button>
+                  </div>
+                )}
               </li>
             ))}
           </ul>
