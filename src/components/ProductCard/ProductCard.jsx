@@ -1,7 +1,16 @@
 import React, { useState } from "react";
 import "./ProductCard.css";
 
-function ProductCard({ product, onEdit, onDelete }) {
+function ProductCard({
+  product,
+  onEdit,
+  onDelete,
+  showMenuOptions = true,
+  showTrashButton = true,
+  showCheckBox = false,
+  selected = false,
+  toggleSelection,
+}) {
   const {
     title,
     price,
@@ -22,19 +31,41 @@ function ProductCard({ product, onEdit, onDelete }) {
         <div className="top-row">
           <h3>{title}</h3>
 
-          <div className="menu-container">
-            <button
-              className="menu-button"
-              onClick={() => setMenuOpen((prev) => !prev)}
-            >
-              ⋮
-            </button>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            {showCheckBox && (
+              <input
+                type="checkbox"
+                checked={selected}
+                onChange={toggleSelection}
+              />
+            )}
 
-            {menuOpen && (
-              <div className="dropdown-menu">
-                <button onClick={() => onEdit(product)}>Editar</button>
-                <button onClick={() => onDelete(product.id)}>Excluir</button>
+            {showMenuOptions && (
+              <div className="menu-container">
+                <button
+                  className="menu-button"
+                  onClick={() => setMenuOpen((prev) => !prev)}
+                >
+                  ⋮
+                </button>
+
+                {menuOpen && (
+                  <div className="dropdown-menu">
+                    <button onClick={() => onEdit && onEdit(product)}>
+                      Editar
+                    </button>
+                    <button onClick={() => onDelete && onDelete(product.id)}>
+                      Excluir
+                    </button>
+                  </div>
+                )}
               </div>
+            )}
+
+            {!showMenuOptions && showTrashButton && (
+              <button onClick={() => onDelete && onDelete(product.id)}>
+                🗑
+              </button>
             )}
           </div>
         </div>

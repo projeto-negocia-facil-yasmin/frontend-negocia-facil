@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import { AdvertisementAPI } from "../services/AdvertisementAPI";
-import SimpleAdvertisementCard from "../components/Advertisement/SimpleAdvertisementCard";
+import { AdvertisementAPI } from "../../services/AdvertisementAPI.js";
+import SimpleAdvertisementCard from "../../components/SimpleAdvertisementCard/SimpleAdvertisementCard.jsx";
 import './AdvertisementsPage.css';
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../components/Sidebar/Sidebar.jsx";
-import Button from "../components/Button/Button.jsx";
+import Button from "../../components/Button/Button.jsx";
 
 function AdvertisementsPage() {
 
@@ -34,16 +33,15 @@ function AdvertisementsPage() {
     }
 
     const handleEdit = (id) => {
-        navigate(`/edit/${id}`);
+        navigate(`${id}`)
     }
 
     const handleNewAdvertisement = () => {
-        navigate("/advertisements/new")
+        navigate("new")
     }
     
     return (
         <div className="advertisements-page-container">
-            <Sidebar />
             <div className="advertisements-page">
                 {advertisements.length === 0 ? (
                     <p className="mensagem-de-aviso">Nenhum anúncio encontrado.</p>

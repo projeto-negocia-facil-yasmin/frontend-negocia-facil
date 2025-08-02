@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import api from "../services/api";
+import { RuleAPI } from "../../services/ruleAPI";
+import { isAdmin } from "../../utils/auth";
 
 export default function RuleForm() {
   const location = useLocation();
@@ -10,20 +11,26 @@ export default function RuleForm() {
   const [title, setTitle] = useState(rule?.title || "");
   const [description, setDescription] = useState(rule?.description || "");
 
+  useEffect(() => {
+    if (!isAdmin()) {
+      navigate(-1);
+    }
+  }, [navigate]);
+
   const saveRule = async () => {
     const data = {
       title,
       description,
-      active: true, // você pode ajustar esse valor conforme necessário
+      active: true,
     };
 
     try {
       if (rule) {
-        await api.put(`/rules/${rule.id}`, data);
+        await RuleAPI.update(rule.id, data);
       } else {
-        await api.post("/rules", data);
+        await RuleAPI.create(data);
       }
-      navigate("/");
+      navigate("/admin/rules");
     } catch (error) {
       console.error("Erro ao salvar regra:", error);
     }

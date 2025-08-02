@@ -57,7 +57,6 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
       category,
       description,
       forExchange: type === "Troca",
-      userId: 1,
     };
 
     try {
