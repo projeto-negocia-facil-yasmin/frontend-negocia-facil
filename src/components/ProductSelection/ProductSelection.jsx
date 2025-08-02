@@ -3,53 +3,58 @@ import ProductList from "../ProductList/ProductList";
 import { ProductAPI } from "../../services/ProductAPI";
 import "./ProductSelection.css";
 
-export function ProductSelection({ selectedProducts, onSelect }) {
-    
-    const [allProducts, setAllProducts] = useState([]);
-    const availableProducts = allProducts.filter(
-        (product) => !selectedProducts.some((p) => p.id === product.id)
-    );
+export function ProductSelection({ selectedProducts = [], onSelect }) {
+  const [allProducts, setAllProducts] = useState([]);
 
-    useEffect(() => {
-        loadAllProducts();
-    }, []);
+  const safeSelected = Array.isArray(selectedProducts) ? selectedProducts : [];
 
-    const toggleProductSelection = (product) => {
-        if (selectedProducts?.includes(product)) {
-            selectedProducts = selectedProducts.filter((p) => p !== product);
-        } else {
-            selectedProducts = [...selectedProducts, product];
-        }
-        handleSelect(selectedProducts)
+  const availableProducts = Array.isArray(allProducts)
+    ? allProducts.filter((product) => !safeSelected.some((p) => p.id === product.id))
+    : [];
+
+  useEffect(() => {
+    loadAllProducts();
+  }, []);
+
+  async function loadAllProducts() {
+    try {
+      const data = await ProductAPI.getAll();
+      console.log("Produtos retornados da API:", data);
+      const productsArray = Array.isArray(data)
+        ? data
+        : Array.isArray(data.content)
+        ? data.content
+        : [];
+      setAllProducts(productsArray);
+    } catch (e) {
+      console.error("Erro carregando produtos disponíveis", e);
+      setAllProducts([]);
     }
-    
+  }
 
-    async function loadAllProducts() {
-           
-        const data = await ProductAPI.getAll();
-        setAllProducts(data);
-            
-    }
+  const toggleProductSelection = (product) => {
+    const alreadySelected = safeSelected.some((p) => p.id === product.id);
+    const newSelection = alreadySelected
+      ? safeSelected.filter((p) => p.id !== product.id)
+      : [...safeSelected, product];
+    onSelect(newSelection);
+  };
 
-    const handleSelect = () => {
-        onSelect(selectedProducts);
-    };
+  if (availableProducts.length === 0) {
+    return null;
+  }
 
-    return (
-        <div>
-            {availableProducts.length > 0 ? (
-            <div>
-            <strong>Produtos disponíveis para escolher</strong>
-            <ProductList
-                products={availableProducts}
-                showMenuOptions={false}
-                showTrashButton={false}
-                showCheckBox={true}
-                selectedProducts={selectedProducts}
-                toggleProductSelection={toggleProductSelection}
-            />
-            </div>
-            ) : (<></>)}
-        </div>
-    );
+  return (
+    <div>
+      <strong>Produtos disponíveis para escolher</strong>
+      <ProductList
+        products={availableProducts}
+        showMenuOptions={false}
+        showTrashButton={false}
+        showCheckBox={true}
+        selectedProducts={safeSelected}
+        toggleProductSelection={toggleProductSelection}
+      />
+    </div>
+  );
 }
