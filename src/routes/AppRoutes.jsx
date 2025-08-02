@@ -45,7 +45,7 @@ export default function AppRoutes() {
           <Route path="rules">
             <Route index element={<RulesList />} />
             <Route path="new" element={<RuleForm />} />
-            <Route path="edit/:id" element={<RuleForm />} />
+            <Route path="edit" element={<RuleForm />} />
           </Route>
         </Route>
 
@@ -61,7 +61,7 @@ export default function AppRoutes() {
           <Route path="rules">
             <Route index element={<RulesList />} />
             <Route path="new" element={<RuleForm />} />
-            <Route path="edit/:id" element={<RuleForm />} />
+            <Route path="edit" element={<RuleForm />} />
           </Route>
         </Route>
 

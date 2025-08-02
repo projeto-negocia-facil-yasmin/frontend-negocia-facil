@@ -7,6 +7,7 @@ export default function RulesList() {
   const [rules, setRules] = useState([]);
   const navigate = useNavigate();
   const admin = isAdmin();
+  const basePath = admin ? "/admin/rules" : "/user/rules";
 
   const fetchRules = async () => {
     try {
@@ -35,11 +36,13 @@ export default function RulesList() {
     <div className="container">
       <div className="card">
         <h1>Lista de Regras</h1>
+
         {admin && (
-          <button className="btn" onClick={() => navigate("new")}>
+          <button className="btn" onClick={() => navigate(`${basePath}/new`)}>
             Nova Regra
           </button>
         )}
+
         {rules.length === 0 ? (
           <p>Nenhuma regra encontrada.</p>
         ) : (
@@ -54,7 +57,7 @@ export default function RulesList() {
                   <div>
                     <button
                       className="btn edit"
-                      onClick={() => navigate("edit", { state: rule })}
+                      onClick={() => navigate(`${basePath}/edit`, { state: rule })}
                     >
                       Editar
                     </button>
