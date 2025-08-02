@@ -2,18 +2,18 @@ import { Home, Package, Tag, Shield, LogOut, Users } from "lucide-react";
 import SidebarHeader from "./SidebarHeader/SidebarHeader";
 import styles from './Sidebar.module.css';
 import { NavLink } from "react-router-dom";
+import { isAdmin } from "../../utils/auth";
 
-function Sidebar({ roles = [], userName, imgUrl }) {
-  const isAdmin = roles.includes("ADMIN");
-  const basePath = isAdmin ? "/admin" : "/user";
+function Sidebar({ userName, imgUrl }) {
+  const admin = isAdmin();
+  const basePath = admin ? "/admin" : "/user";
 
   const menuItems = [
     { icon: <Home size={20} />, label: "Início", path: `${basePath}` },
     { icon: <Package size={20} />, label: "Produtos", path: `${basePath}/products` },
     { icon: <Tag size={20} />, label: "Anúncios", path: `${basePath}/advertisements` },
     { icon: <Shield size={20} />, label: "Regras", path: `${basePath}/rules` },
-
-    ...(isAdmin
+    ...(admin
       ? [{ icon: <Users size={20} />, label: "Usuários", path: `${basePath}/users` }]
       : []),
   ];
