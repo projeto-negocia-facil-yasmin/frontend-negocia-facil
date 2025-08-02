@@ -5,85 +5,113 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function Register() {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate()
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [enrollmentNumber, setEnrollmentNumber] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [fullName, setFullName] = useState("");
-    const [enrollmentNumber, setEnrollmentNumber] = useState("");
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setErrorMsg("");
+    setLoading(true);
 
-    const handleRegister = async (e) => {
-        e.preventDefault();
-
-        const userData = {
-            username,
-            password,
-            fullName,
-            enrollmentNumber
-        };
-
-        try {
-            const response = await axios.post("http://localhost:8080/auth/register", userData);
-
-            if (response.status === 201 || response.status === 200) {
-                navigate("/auth/login");
-            }
-        } catch (err) {
-            console.error("Erro ao cadastrar:", err);
-        }
+    const userData = {
+      username,
+      password,
+      fullName,
+      enrollmentNumber,
     };
 
-    return (
-        <div className={styles.container}>
-            <form onSubmit={handleRegister} className={styles.form}>
-                <h2 className={styles.title}>Bem-vindo! Crie sua conta</h2>
+    try {
+      const registerRes = await axios.post("http://localhost:8080/auth/register", userData);
 
-                <input
-                    type="email"
-                    placeholder="Email institucional"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    className={styles.input}
-                    required
-                    pattern="^[a-zA-Z0-9._%+\-]+@ifpb\.edu\.br$"
-                    title="O email deve terminar com @ifpb.edu.br"
-                />
+      if (registerRes.status === 201 || registerRes.status === 200) {
+        const loginRes = await axios.post("http://localhost:8080/auth/login", {
+          username,
+          password,
+        });
 
-                <input
-                    type="password"
-                    placeholder="Senha (mínimo 8 caracteres)"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className={styles.input}
-                    required
-                    minLength={8}
-                    maxLength={30}
-                />
+        const token = loginRes.data.accessToken;
+        localStorage.setItem("token", token);
 
-                <input
-                    type="text"
-                    placeholder="Nome completo"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    className={styles.input}
-                    required
-                />
+        if (username.toLowerCase().endsWith("@ifpb.edu.br")) {
+          navigate("/admin");
+        } else {
+          navigate("/user/products"); 
+        }
+      } else {
+        setErrorMsg("Falha inesperada no cadastro.");
+      }
+    } catch (err) {
+      console.error("Erro ao cadastrar:", err);
+      const msg =
+        err.response?.data || err.response?.data?.message || err.message || "Erro ao cadastrar";
+      setErrorMsg(String(msg));
+    } finally {
+      setLoading(false);
+    }
+  };
 
-                <input
-                    type="text"
-                    placeholder="Matrícula"
-                    value={enrollmentNumber}
-                    onChange={(e) => setEnrollmentNumber(e.target.value)}
-                    className={styles.input}
-                    required
-                />
+  return (
+    <div className={styles.container}>
+      <form onSubmit={handleRegister} className={styles.form} aria-label="formulário de cadastro">
+        <h2 className={styles.title}>Bem-vindo! Crie sua conta</h2>
 
-                <Button type={"submit"} text={"Cadastrar"} />
-                <Link to="/auth/login" className={styles.link}>
-                    Já tem uma conta? Voltar para login
-                </Link>
-            </form>
-        </div>
-    );
+        {errorMsg && <div className={styles.error}>{errorMsg}</div>}
+
+        <input
+          type="email"
+          placeholder="Email institucional"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className={styles.input}
+          required
+          pattern="^[a-zA-Z0-9._%+\-]+@(ifpb\.edu\.br|academico\.ifpb\.edu\.br)$"
+          title="O email deve terminar com @ifpb.edu.br ou @academico.ifpb.edu.br"
+          aria-label="email institucional"
+        />
+
+        <input
+          type="password"
+          placeholder="Senha (mínimo 8 caracteres)"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className={styles.input}
+          required
+          minLength={8}
+          maxLength={30}
+          aria-label="senha"
+        />
+
+        <input
+          type="text"
+          placeholder="Nome completo"
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+          className={styles.input}
+          required
+          aria-label="nome completo"
+        />
+
+        <input
+          type="text"
+          placeholder="Matrícula"
+          value={enrollmentNumber}
+          onChange={(e) => setEnrollmentNumber(e.target.value)}
+          className={styles.input}
+          required
+          aria-label="matrícula"
+        />
+
+        <Button type="submit" text={loading ? "Cadastrando..." : "Cadastrar"} disabled={loading} />
+        <Link to="/auth/login" className={styles.link}>
+          Já tem uma conta? Voltar para login
+        </Link>
+      </form>
+    </div>
+  );
 }
