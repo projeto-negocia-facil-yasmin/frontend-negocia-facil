@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RuleAPI } from "../../services/ruleAPI";
 import { isAdmin } from "../../utils/auth";
+import styles from "./RulesList.module.css";
+import { MoreVertical } from "lucide-react";
 
 export default function RulesList() {
   const [rules, setRules] = useState([]);
@@ -32,41 +34,60 @@ export default function RulesList() {
     fetchRules();
   }, []);
 
-  return (
-    <div className="container">
-      <div className="card">
-        <h1>Lista de Regras</h1>
+  const [openMenuId, setOpenMenuId] = useState(null);
 
-        {admin && (
-          <button className="btn" onClick={() => navigate(`${basePath}/new`)}>
-            Nova Regra
-          </button>
-        )}
+  const toggleMenu = (id) => {
+    setOpenMenuId(openMenuId === id ? null : id);
+  };
+
+  return (
+    <div className={styles.container}>
+      <div className={styles.card}>
+        <h1>Lista de Regras</h1>
 
         {rules.length === 0 ? (
           <p>Nenhuma regra encontrada.</p>
         ) : (
           <ul>
             {rules.map((rule) => (
-              <li key={rule.id} className="rule-item">
+              <li key={rule.id} className={styles.ruleItem}>
                 <div>
-                  <strong>{rule.title}</strong>
-                  <p>{rule.description}</p>
+                  <strong className={styles.ruleItemTitle}>{rule.title}</strong>
+                  <p className={styles.ruleItemDescription}>{rule.description}</p>
                 </div>
+
                 {admin && (
-                  <div>
+                  <div style={{ position: "relative" }}>
                     <button
-                      className="btn edit"
-                      onClick={() => navigate(`${basePath}/edit`, { state: rule })}
+                      className={styles.dropdownButton}
+                      onClick={() => toggleMenu(rule.id)}
+                      aria-haspopup="true"
+                      aria-expanded={openMenuId === rule.id}
+                      aria-label="Abrir menu de opções"
                     >
-                      Editar
+                      <MoreVertical />
                     </button>
-                    <button
-                      className="btn delete"
-                      onClick={() => deleteRule(rule.id)}
-                    >
-                      Excluir
-                    </button>
+
+                    {openMenuId === rule.id && (
+                      <div className={styles.dropdownMenu}>
+                        <button
+                          onClick={() => {
+                            navigate(`${basePath}/edit`, { state: rule });
+                            setOpenMenuId(null);
+                          }}
+                        >
+                          Editar
+                        </button>
+                        <button
+                          onClick={() => {
+                            deleteRule(rule.id);
+                            setOpenMenuId(null);
+                          }}
+                        >
+                          Excluir
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
               </li>
@@ -74,6 +95,16 @@ export default function RulesList() {
           </ul>
         )}
       </div>
+
+      {admin && (
+        <button
+          className={styles.btnNewRule}
+          onClick={() => navigate(`${basePath}/new`)}
+          aria-label="Adicionar nova regra"
+        >
+          Nova Regra
+        </button>
+      )}
     </div>
   );
 }

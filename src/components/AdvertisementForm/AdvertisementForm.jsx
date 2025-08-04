@@ -3,7 +3,7 @@ import ProductList from "../ProductList/ProductList";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProductSelection } from "../ProductSelection/ProductSelection";
-import "./AdvertisementForm.css";
+import styles from "./AdvertisementForm.module.css";
 
 export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
       return;
     }
     const userId = products[0]?.userId;
-    
+
     advertisement.description = description;
     advertisement.products = products;
     advertisement.advertiser = { id: userId };
@@ -37,12 +37,12 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
   };
 
   return (
-    <div className="advertisement-form">
+    <div className={styles.advertisementForm}>
       {!isNew && (
         <div>
-          <p>ID: {advertisement.id}</p>
-          <p>{datetime.toLocaleDateString("pt-BR")}</p>
-          <p>
+          <p className={styles.paragraphText}>ID: {advertisement.id}</p>
+          <p className={styles.paragraphText}>{datetime.toLocaleDateString("pt-BR")}</p>
+          <p className={styles.paragraphText}>
             {datetime.toLocaleTimeString("pt-BR", {
               hour: "2-digit",
               minute: "2-digit",
@@ -51,12 +51,14 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
         </div>
       )}
 
-      <p>Quantidade de itens no anúncio: {products.length}</p>
+      <p className={styles.paragraphText}>Quantidade de itens no anúncio: {products.length}</p>
 
-      <form className="form-description" onSubmit={updateAdvertisement}>
-        <label>Descrição:</label>
+      <form className={styles.formDescription} onSubmit={updateAdvertisement}>
+        <label htmlFor="description" className={styles.labelText}>Descrição:</label>
         <textarea
+          id="description"
           name="description"
+          className={styles.descriptionTextarea}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
@@ -66,7 +68,7 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
 
       {products.length > 0 ? (
         <div>
-          <h3>Produtos anunciados</h3>
+          <h3 className={styles.heading3}>Produtos anunciados</h3>
           <ProductList
             products={products}
             onDelete={removeProduct}
@@ -76,7 +78,7 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
           />
         </div>
       ) : (
-        <p>Nenhum produto anunciado.</p>
+        <p className={styles.paragraphText}>Nenhum produto anunciado.</p>
       )}
 
       <ProductSelection selectedProducts={products} onSelect={setProducts} />

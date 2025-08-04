@@ -1,0 +1,132 @@
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  background-color: #f0f2f5;
+  min-height: 80vh;
+}
+
+.card {
+  background-color: #fff;
+  padding: 30px 40px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  max-width: 700px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+}
+
+h1 {
+  margin: 0 0 15px 0;
+  color: #333;
+  font-weight: 600;
+  font-size: 1.8rem;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.ruleItem {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f9fafb;
+  padding: 15px 20px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.ruleItem > div:first-child {
+  max-width: 70%;
+}
+
+.ruleItemTitle {
+  display: block;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #222;
+  margin-bottom: 6px;
+}
+
+.ruleItemDescription {
+  margin: 0;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.dropdownButton {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #333;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  position: relative;
+}
+
+.dropdownButton:hover {
+  background-color: #e0e0e0;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 32px;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  min-width: 140px;
+}
+
+.dropdownMenu button {
+  background: none;
+  border: none;
+  padding: 10px 16px;
+  text-align: left;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  width: 100%;
+}
+
+.dropdownMenu button:hover {
+  background-color: #f0f0f0;
+}
+
+.btnNewRule {
+  position: fixed;
+  bottom: 100px;
+  left: 42%;
+  transform: translateX(-50%);
+  background-color: #007bff;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 30px;
+  padding: 12px 36px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.btnNewRule:hover {
+  background-color: #0056b3;
+}

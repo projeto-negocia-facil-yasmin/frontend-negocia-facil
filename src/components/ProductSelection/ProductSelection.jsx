@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ProductList from "../ProductList/ProductList";
 import { ProductAPI } from "../../services/ProductAPI";
-import "./ProductSelection.css";
+import styles from "./ProductSelection.module.css";
 
 export function ProductSelection({ selectedProducts = [], onSelect }) {
   const [allProducts, setAllProducts] = useState([]);
@@ -45,8 +45,8 @@ export function ProductSelection({ selectedProducts = [], onSelect }) {
   }
 
   return (
-    <div>
-      <strong>Produtos disponíveis para escolher</strong>
+    <div className={styles.container}>
+      <strong className={styles.title}>Produtos disponíveis para escolher</strong>
       <ProductList
         products={availableProducts}
         showMenuOptions={false}

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { RuleAPI } from "../../services/ruleAPI";
 import { isAdmin } from "../../utils/auth";
+import styles from "./RuleForm.module.css";
 
 export default function RuleForm() {
   const location = useLocation();
@@ -37,23 +38,26 @@ export default function RuleForm() {
   };
 
   return (
-    <div className="container">
-      <div className="card">
+    <div className={styles.container}>
+      <div className={styles.card}>
         <h1>{rule ? "Editar Regra" : "Nova Regra"}</h1>
+
         <input
           type="text"
           placeholder="Título"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="input"
+          className={styles.input}
         />
+
         <textarea
           placeholder="Descrição"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="textarea"
-        ></textarea>
-        <button className="btn" onClick={saveRule}>
+          className={styles.textarea}
+        />
+
+        <button className={styles.btn} onClick={saveRule}>
           Salvar
         </button>
       </div>

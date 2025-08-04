@@ -2,7 +2,7 @@ import AdvertisementForm from "../../components/AdvertisementForm/AdvertisementF
 import { AdvertisementAPI } from "../../services/AdvertisementAPI";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import './AdvertisementFormPage.css';
+import styles from "./AdvertisementFormPage.module.css";
 
 export function AdvertisementFormPage() {
   const { id } = useParams();
@@ -47,8 +47,8 @@ export function AdvertisementFormPage() {
   }
 
   return (
-    <div className="advertisements-page-container">
-      <div className="advertisement-edition">
+    <div className={styles.advertisementsPageContainer}>
+      <div className={styles.advertisementEdition}>
         <h1>Formulário de Anúncio</h1>
         <AdvertisementForm
           advertisement={advertisement}

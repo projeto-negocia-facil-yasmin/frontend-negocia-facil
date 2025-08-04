@@ -1,14 +1,15 @@
-.advertisements-page {
+.advertisementsPage {
   display: flex;
   flex-direction: column;
   align-items: stretch;
   width: 600px;
 }
 
-.mensagem-de-aviso {
+.mensagemDeAviso {
   color: antiquewhite;
 }
-.advertisements-list {
+
+.advertisementsList {
   display: flex;
   flex-direction: column;
   align-items: stretch;

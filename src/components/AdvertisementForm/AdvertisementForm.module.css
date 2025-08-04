@@ -1,0 +1,42 @@
+.advertisementForm {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.formDescription {
+  display: flex;
+  flex-direction: column;
+  align-content: stretch;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.labelText {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.paragraphText {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.heading3 {
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.descriptionTextarea {
+  width: 50%;
+  min-height: 100px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: both;
+}

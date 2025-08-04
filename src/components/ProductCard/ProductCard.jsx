@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./ProductCard.css";
+import styles from "./ProductCard.module.css";
 
 function ProductCard({
   product,
@@ -24,12 +24,12 @@ function ProductCard({
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="card">
-      {imageUrl && <img src={imageUrl} className="thumb" alt={title} />}
+    <div className={styles.card}>
+      {imageUrl && <img src={imageUrl} className={styles.thumb} alt={title} />}
 
-      <div className="body">
-        <div className="top-row">
-          <h3>{title}</h3>
+      <div className={styles.body}>
+        <div className={styles.topRow}>
+          <h3 className={styles.topRowTitle}>{title}</h3>
 
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             {showCheckBox && (
@@ -41,16 +41,16 @@ function ProductCard({
             )}
 
             {showMenuOptions && (
-              <div className="menu-container">
+              <div className={styles.menuContainer}>
                 <button
-                  className="menu-button"
+                  className={styles.menuButton}
                   onClick={() => setMenuOpen((prev) => !prev)}
                 >
                   ⋮
                 </button>
 
                 {menuOpen && (
-                  <div className="dropdown-menu">
+                  <div className={styles.dropdownMenu}>
                     <button onClick={() => onEdit && onEdit(product)}>
                       Editar
                     </button>
@@ -63,29 +63,27 @@ function ProductCard({
             )}
 
             {!showMenuOptions && showTrashButton && (
-              <button onClick={() => onDelete && onDelete(product.id)}>
-                🗑
-              </button>
+              <button onClick={() => onDelete && onDelete(product.id)}>🗑</button>
             )}
           </div>
         </div>
 
-        <div className="info-row">
-          <span className="price">
+        <div className={styles.infoRow}>
+          <span className={styles.price}>
             {price.toLocaleString("pt-BR", {
               style: "currency",
               currency: "BRL",
             })}
           </span>
-          <span className="qty">qtd:{quantity}</span>
+          <span className={styles.qty}>qtd:{quantity}</span>
         </div>
 
-        <div className="info-row">
-          <span className="category">{category}</span>
-          <span className="exchange">{forExchange ? "Troca" : "Venda"}</span>
+        <div className={styles.infoRow}>
+          <span className={styles.category}>{category}</span>
+          <span className={styles.exchange}>{forExchange ? "Troca" : "Venda"}</span>
         </div>
 
-        <p className="description">{description}</p>
+        <p className={styles.description}>{description}</p>
       </div>
     </div>
   );
