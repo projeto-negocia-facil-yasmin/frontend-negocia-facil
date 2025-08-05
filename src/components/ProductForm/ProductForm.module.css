@@ -76,3 +76,12 @@ textarea {
 .save:hover {
   background-color: #bdbdbd;
 }
+
+.imagePreview {
+  margin-top: 10px;
+  max-width: 200px;
+  border-radius: 8px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+  display: block;
+  object-fit: contain;
+}

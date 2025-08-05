@@ -10,7 +10,8 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
   const [category, setCategory] = useState("");
   const [type, setType] = useState("Venda");
   const [description, setDescription] = useState("");
-  const [file, setFile] = useState(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     if (productToEdit) {
@@ -20,7 +21,7 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
       setCategory(productToEdit.category);
       setType(productToEdit.forExchange ? "Troca" : "Venda");
       setDescription(productToEdit.description);
-      setFile(null);
+      setImagePreviewUrl(productToEdit.imageUrl || "");
     } else {
       clearForm();
     }
@@ -33,12 +34,45 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
     setCategory("");
     setType("Venda");
     setDescription("");
-    setFile(null);
+    setImagePreviewUrl("");
+    setIsUploading(false);
   }
 
   function handleCancel() {
     clearForm();
     onCancel();
+  }
+
+  async function handleImageUpload(file) {
+    setIsUploading(true); 
+    const cloudName = "dxnmdkbnd";
+    const uploadPreset = "negocia_facil";
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", uploadPreset);
+
+    try {
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        console.log("URL da imagem enviada:", data.secure_url);
+        setImagePreviewUrl(data.secure_url);
+      } else {
+        console.error("Erro no upload:", data);
+        toast.error("Erro ao enviar imagem.");
+      }
+    } catch (error) {
+      console.error("Erro ao fazer upload da imagem:", error);
+      toast.error("Erro ao enviar imagem.");
+    } finally {
+      setIsUploading(false); 
+    }
   }
 
   async function handleSubmit(e) {
@@ -57,6 +91,7 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
       category,
       description,
       forExchange: type === "Troca",
+      imageUrl: imagePreviewUrl,
     };
 
     try {
@@ -80,7 +115,10 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
   }
 
   function handleFileChange(e) {
-    setFile(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file) {
+      handleImageUpload(file);
+    }
   }
 
   return (
@@ -138,6 +176,14 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
 
         <input type="file" onChange={handleFileChange} />
 
+        {imagePreviewUrl && (
+          <img
+            src={imagePreviewUrl}
+            alt="Preview"
+            className={styles.imagePreview}
+          />
+        )}
+
         <textarea
           placeholder="Descrição"
           rows={5}
@@ -149,8 +195,13 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
           <button type="button" className={styles.cancel} onClick={handleCancel}>
             Cancelar
           </button>
-          <button type="submit" className={styles.save}>
-            Salvar
+
+          <button
+            type="submit"
+            className={styles.save}
+            disabled={isUploading} 
+          >
+            {isUploading ? "Enviando imagem..." : "Salvar"}
           </button>
         </div>
       </form>
