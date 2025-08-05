@@ -1,10 +1,14 @@
 import styles from './UserCard.module.css'
 import { Edit, Trash } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios"
+import axios from "axios";
+import toast from "react-hot-toast";
+
 export default function UserCard({ id, imgUrl, userName, email }) {
 
     const navigate = useNavigate();
+
+    console.log("Token usado:", localStorage.getItem("token"));
 
     async function confirmDelete() {
         const confirm = window.confirm(`Tem certeza que deseja excluir o usuário ${userName}?`);
@@ -17,11 +21,17 @@ export default function UserCard({ id, imgUrl, userName, email }) {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            alert("Usuário excluído com sucesso!");
+            toast.success("Usuário excluído com sucesso!");
         } catch (error) {
             console.error("Erro ao excluir usuário:", error);
-            const errorMessage = error.response?.data?.message;
-            alert(errorMessage);
+            console.log("Resposta do erro:", error.response);
+
+            const errorMessage =
+                error.response?.data?.message ||
+                (typeof error.response?.data === "string" ? error.response.data : null) ||
+                "Erro ao excluir usuário";
+
+            toast.error(errorMessage);
         }
     }
 

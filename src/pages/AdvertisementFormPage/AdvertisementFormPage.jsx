@@ -25,7 +25,7 @@ export function AdvertisementFormPage() {
       const data = await AdvertisementAPI.getById(id);
       setAdvertisement(data);
     } catch (error) {
-      alert("Erro ao carregar anúncio.");
+      toast.error("Erro ao carregar anúncio.");
       console.error(error);
     }
   }
@@ -34,14 +34,12 @@ export function AdvertisementFormPage() {
     try {
       if (id) {
         await AdvertisementAPI.update(id, newAdvertisement);
-        alert("Anúncio atualizado com sucesso!");
       } else {
         await AdvertisementAPI.create(newAdvertisement);
-        alert("Anúncio criado com sucesso!");
       }
       navigate("..", { replace: true });
     } catch (error) {
-      alert("Erro ao salvar anúncio.");
+      toast.error("Erro ao salvar anúncio.");
       console.error(error.message);
     }
   }

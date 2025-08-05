@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProductSelection } from "../ProductSelection/ProductSelection";
 import styles from "./AdvertisementForm.module.css";
+import toast from "react-hot-toast";
 
 export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
   async function updateAdvertisement(event) {
     event.preventDefault();
     if (products.length === 0) {
-      alert("Adicione pelo menos um produto ao anúncio antes de salvar.");
+      toast.error("Adicione pelo menos um produto ao anúncio antes de salvar.");
       return;
     }
     const userId = products[0]?.userId;
@@ -29,7 +30,13 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
     advertisement.products = products;
     advertisement.advertiser = { id: userId };
 
-    await onUpdate(advertisement.id, advertisement);
+    try {
+      await onUpdate(advertisement.id, advertisement);
+      toast.success(isNew ? "Anúncio criado com sucesso!" : "Anúncio atualizado com sucesso!");
+    } catch (err) {
+      toast.error("Erro ao salvar anúncio.");
+      console.error(err);
+    }
   }
 
   const removeProduct = (productId) => {

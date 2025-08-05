@@ -1,6 +1,7 @@
-import styles from './ProductForm.module.css';
-import { ProductAPI } from '../../services/ProductAPI';
-import { toast } from 'react-toastify';
+import { useState, useEffect } from "react";
+import { ProductAPI } from "../../services/ProductAPI";
+import toast from "react-hot-toast";
+import styles from "./ProductForm.module.css";
 
 function ProductForm({ productToEdit, onCancel, onSave }) {
   const [title, setTitle] = useState("");
@@ -10,15 +11,16 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
   const [type, setType] = useState("Venda");
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     if (productToEdit) {
-      setTitle(productToEdit.title);
-      setPrice(productToEdit.price);
-      setQuantity(productToEdit.quantity);
-      setCategory(productToEdit.category);
+      setTitle(productToEdit.title || "");
+      setPrice(productToEdit.price ?? "");
+      setQuantity(productToEdit.quantity ?? "");
+      setCategory(productToEdit.category || "");
       setType(productToEdit.forExchange ? "Troca" : "Venda");
-      setDescription(productToEdit.description);
+      setDescription(productToEdit.description || "");
       setFile(null);
     } else {
       clearForm();
@@ -44,8 +46,9 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
     e.preventDefault();
 
     if (!title || !price || !quantity || !category) {
-      toast.dismiss();
-      toast.warn("Preencha todos os campos obrigatórios.");
+      toast.warning("Preencha todos os campos obrigatórios.", {
+        id: "product-validation-warning",
+      });
       return;
     }
 
@@ -58,23 +61,36 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
       forExchange: type === "Troca",
     };
 
+    const toastId = productToEdit?.id
+      ? `product-save-${productToEdit.id}`
+      : "product-save-new";
+
     try {
-      toast.dismiss();
+      setIsSaving(true);
+      toast.loading(
+        productToEdit && productToEdit.id
+          ? "Atualizando produto..."
+          : "Cadastrando produto...",
+        { id: toastId }
+      );
 
       let savedProduct;
       if (productToEdit && productToEdit.id) {
         savedProduct = await ProductAPI.update(productToEdit.id, payload);
-        toast.success("Produto atualizado com sucesso!");
+        toast.success("Produto atualizado com sucesso!", { id: toastId });
       } else {
         savedProduct = await ProductAPI.create(payload);
-        toast.success("Produto cadastrado com sucesso!");
+        toast.success("Produto cadastrado com sucesso!", { id: toastId });
       }
 
       clearForm();
       onSave(savedProduct);
     } catch (error) {
-      toast.dismiss();
-      toast.error(error.message);
+      const msg = error?.response?.data?.message || error.message || "Erro desconhecido.";
+      toast.error(msg, { id: `${toastId}-error` });
+      console.error(error);
+    } finally {
+      setIsSaving(false);
     }
   }
 
@@ -91,6 +107,7 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
+          disabled={isSaving}
         />
 
         <div className={styles.inlineGroup}>
@@ -101,6 +118,7 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
             onChange={(e) => setPrice(e.target.value)}
             required
             min="0"
+            disabled={isSaving}
           />
           <input
             type="number"
@@ -109,6 +127,7 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
             onChange={(e) => setQuantity(e.target.value)}
             required
             min="0"
+            disabled={isSaving}
           />
         </div>
 
@@ -117,6 +136,7 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             required
+            disabled={isSaving}
           >
             <option value="">Categoria</option>
             <option value="BOOK">Livro</option>
@@ -127,27 +147,37 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
             <option value="OTHERS">Outros</option>
           </select>
 
-          <select value={type} onChange={(e) => setType(e.target.value)}>
+          <select
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            disabled={isSaving}
+          >
             <option value="Venda">Venda</option>
             <option value="Troca">Troca</option>
           </select>
         </div>
 
-        <input type="file" onChange={handleFileChange} />
+        <input type="file" onChange={handleFileChange} disabled={isSaving} />
 
         <textarea
           placeholder="Descrição"
           rows={5}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          disabled={isSaving}
         ></textarea>
 
         <div className={styles.buttonGroup}>
-          <button type="button" className={styles.cancel} onClick={handleCancel}>
+          <button
+            type="button"
+            className={styles.cancel}
+            onClick={handleCancel}
+            disabled={isSaving}
+          >
             Cancelar
           </button>
-          <button type="submit" className={styles.save}>
-            Salvar
+          <button type="submit" className={styles.save} disabled={isSaving}>
+            {isSaving ? "Salvando..." : "Salvar"}
           </button>
         </div>
       </form>

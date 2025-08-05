@@ -86,6 +86,8 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={handleSubmit}>
+        <h1 className={styles.title}>Cadastro de Produto</h1>
+
         <input
           type="text"
           placeholder="Título do Produto"

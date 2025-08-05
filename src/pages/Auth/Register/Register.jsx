@@ -3,6 +3,7 @@ import { useState } from "react";
 import Button from "../../../components/Button/Button.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -12,11 +13,9 @@ export default function Register() {
   const [fullName, setFullName] = useState("");
   const [enrollmentNumber, setEnrollmentNumber] = useState("");
   const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    setErrorMsg("");
     setLoading(true);
 
     const userData = {
@@ -38,19 +37,24 @@ export default function Register() {
         const token = loginRes.data.accessToken;
         localStorage.setItem("token", token);
 
+        toast.success("Cadastro realizado com sucesso!", { id: "register-success" });
+
         if (username.toLowerCase().endsWith("@ifpb.edu.br")) {
           navigate("/admin");
         } else {
-          navigate("/user/products"); 
+          navigate("/user/products");
         }
       } else {
-        setErrorMsg("Falha inesperada no cadastro.");
+        toast.error("Falha inesperada no cadastro.", { id: "register-failure" });
       }
     } catch (err) {
       console.error("Erro ao cadastrar:", err);
       const msg =
-        err.response?.data || err.response?.data?.message || err.message || "Erro ao cadastrar";
-      setErrorMsg(String(msg));
+        err.response?.data?.message ||
+        err.response?.data ||
+        err.message ||
+        "Erro ao cadastrar";
+      toast.error(msg, { id: "register-error" });
     } finally {
       setLoading(false);
     }
@@ -60,8 +64,6 @@ export default function Register() {
     <div className={styles.container}>
       <form onSubmit={handleRegister} className={styles.form} aria-label="formulário de cadastro">
         <h2 className={styles.title}>Bem-vindo! Crie sua conta</h2>
-
-        {errorMsg && <div className={styles.error}>{errorMsg}</div>}
 
         <input
           type="email"

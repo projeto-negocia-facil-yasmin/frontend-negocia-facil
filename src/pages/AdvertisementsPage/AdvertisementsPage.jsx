@@ -4,6 +4,7 @@ import SimpleAdvertisementCard from "../../components/SimpleAdvertisementCard/Si
 import styles from "./AdvertisementsPage.module.css";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button/Button.jsx";
+import toast from "react-hot-toast";
 
 function AdvertisementsPage() {
   const navigate = useNavigate();
@@ -15,16 +16,22 @@ function AdvertisementsPage() {
   }, []);
 
   async function loadAdvertisements() {
-    const data = await AdvertisementAPI.getAll();
-    setAdvertisements(data);
+    try {
+      const data = await AdvertisementAPI.getAll();
+      setAdvertisements(data);
+    } catch (err) {
+      toast.error("Erro ao carregar anúncios.");
+      console.error(err);
+    }
   }
 
   const handleDelete = async (id) => {
     try {
       await AdvertisementAPI.delete(id);
-      loadAdvertisements();
-      console.info("Anúncio deletado com sucesso!");
+      await loadAdvertisements();
+      toast.success("Anúncio deletado com sucesso!");
     } catch (error) {
+      toast.error("Erro ao deletar anúncio.");
       console.error(error.message);
     }
   };

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { RuleAPI } from "../../services/ruleAPI";
 import { isAdmin } from "../../utils/auth";
+import toast from "react-hot-toast";
 import styles from "./RulesList.module.css";
 import { MoreVertical } from "lucide-react";
 
@@ -24,9 +25,11 @@ export default function RulesList() {
     if (!admin) return;
     try {
       await RuleAPI.delete(id);
+      toast.success("Regra excluída com sucesso!", { id: `rule-deleted-${id}` });
       fetchRules();
     } catch (error) {
       console.error("Erro ao deletar regra:", error);
+      toast.error("Erro ao deletar regra.");
     }
   };
 
@@ -35,7 +38,6 @@ export default function RulesList() {
   }, []);
 
   const [openMenuId, setOpenMenuId] = useState(null);
-
   const toggleMenu = (id) => {
     setOpenMenuId(openMenuId === id ? null : id);
   };
