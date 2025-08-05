@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./ProductForm.module.css";
-import { ProductAPI } from "../../services/ProductAPI";
-import { toast } from "react-toastify";
 
 function ProductForm({ productToEdit, onCancel, onSave }) {
   const [title, setTitle] = useState("");
@@ -44,7 +42,7 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
   }
 
   async function handleImageUpload(file) {
-    setIsUploading(true); 
+    setIsUploading(true);
     const cloudName = "dxnmdkbnd";
     const uploadPreset = "negocia_facil";
 
@@ -61,56 +59,15 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
       const data = await res.json();
 
       if (res.ok) {
-        console.log("URL da imagem enviada:", data.secure_url);
         setImagePreviewUrl(data.secure_url);
       } else {
-        console.error("Erro no upload:", data);
-        toast.error("Erro ao enviar imagem.");
+        throw new Error("Erro ao enviar imagem.");
       }
     } catch (error) {
-      console.error("Erro ao fazer upload da imagem:", error);
-      toast.error("Erro ao enviar imagem.");
+      console.error(error);
+      alert("Erro ao enviar imagem.");
     } finally {
-      setIsUploading(false); 
-    }
-  }
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-
-    if (!title || !price || !quantity || !category) {
-      toast.dismiss();
-      toast.warn("Preencha todos os campos obrigatórios.");
-      return;
-    }
-
-    const payload = {
-      title,
-      price: Number(price),
-      quantity: Number(quantity),
-      category,
-      description,
-      forExchange: type === "Troca",
-      imageUrl: imagePreviewUrl,
-    };
-
-    try {
-      toast.dismiss();
-
-      let savedProduct;
-      if (productToEdit && productToEdit.id) {
-        savedProduct = await ProductAPI.update(productToEdit.id, payload);
-        toast.success("Produto atualizado com sucesso!");
-      } else {
-        savedProduct = await ProductAPI.create(payload);
-        toast.success("Produto cadastrado com sucesso!");
-      }
-
-      clearForm();
-      onSave(savedProduct);
-    } catch (error) {
-      toast.dismiss();
-      toast.error(error.message);
+      setIsUploading(false);
     }
   }
 
@@ -121,10 +78,32 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
     }
   }
 
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    if (!title || !price || !quantity || !category) {
+      alert("Preencha todos os campos obrigatórios.");
+      return;
+    }
+
+    const payload = {
+      id: productToEdit?.id, 
+      title,
+      price: Number(price),
+      quantity: Number(quantity),
+      category,
+      description,
+      forExchange: type === "Troca",
+      imageUrl: imagePreviewUrl,
+    };
+
+    onSave(payload);
+  }
+
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={handleSubmit}>
-        <h1 className={styles.title}>Cadastro de Produto</h1>
+        <h1 className={styles.title}>{productToEdit ? "Editar Produto" : "Cadastro de Produto"}</h1>
 
         <input
           type="text"
@@ -154,11 +133,7 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
         </div>
 
         <div className={styles.inlineGroup}>
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            required
-          >
+          <select value={category} onChange={(e) => setCategory(e.target.value)} required>
             <option value="">Categoria</option>
             <option value="BOOK">Livro</option>
             <option value="UNIFORM">Uniforme</option>
@@ -176,13 +151,7 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
 
         <input type="file" onChange={handleFileChange} />
 
-        {imagePreviewUrl && (
-          <img
-            src={imagePreviewUrl}
-            alt="Preview"
-            className={styles.imagePreview}
-          />
-        )}
+        {imagePreviewUrl && <img src={imagePreviewUrl} alt="Preview" className={styles.imagePreview} />}
 
         <textarea
           placeholder="Descrição"
@@ -195,12 +164,7 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
           <button type="button" className={styles.cancel} onClick={handleCancel}>
             Cancelar
           </button>
-
-          <button
-            type="submit"
-            className={styles.save}
-            disabled={isUploading} 
-          >
+          <button type="submit" className={styles.save} disabled={isUploading}>
             {isUploading ? "Enviando imagem..." : "Salvar"}
           </button>
         </div>
