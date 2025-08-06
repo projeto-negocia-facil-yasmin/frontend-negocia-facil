@@ -1,11 +1,12 @@
 .card {
   display: flex;
   gap: 16px;
-  padding: 20px;
+  padding: 20px 32px;
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-  max-width: 765px;
+  max-width: 900px;
+  width: 100%; 
   margin: 0 auto 24px;
   position: relative;
 }
@@ -15,65 +16,63 @@
   height: 120px;
   object-fit: cover;
   border-radius: 6px;
+  flex-shrink: 0; 
 }
 
 .body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
+  justify-content: center;
 }
 
 .topRow {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  position: relative;        
+  align-items: center; 
+  position: relative;
 }
 
 .topRowTitle {
   color: black;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 
 .infoRow {
   display: flex;
-  gap: 16px;
+  gap: 8px; 
   font-size: 14px;
   color: #555;
+  align-items: center;
 }
 
 .price {
   font-weight: 600;
 }
 
-.qty {
-  color: #777;
-}
-
-.category {
+.qty, .category {
   color: #777;
 }
 
 .exchange {
+  margin-left: 10;
   display: flex;
   align-items: center;
-  gap: 4px;
-  color: #555;
 }
 
 .description {
   margin-top: 8px;
   font-size: 14px;
-  line-height: 1.4;
+  line-height: 1.5;
   color: #444;
 }
 
 .menuContainer {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 8px;
+  right: 8px;
 }
 
 .menuButton {

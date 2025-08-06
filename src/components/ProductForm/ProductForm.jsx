@@ -1,24 +1,32 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ProductForm.module.css";
+import { CategoryAPI } from "../../services/CategoryAPI";
 
 function ProductForm({ productToEdit, onCancel, onSave }) {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
-  const [category, setCategory] = useState("");
+  const [categoryId, setCategoryId] = useState("");
   const [type, setType] = useState("Venda");
   const [description, setDescription] = useState("");
   const [imagePreviewUrl, setImagePreviewUrl] = useState("");
   const [isUploading, setIsUploading] = useState(false);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    CategoryAPI.getAll()
+      .then((data) => setCategories(data))
+      .catch(() => alert("Erro ao carregar categorias"));
+  }, []);
 
   useEffect(() => {
     if (productToEdit) {
-      setTitle(productToEdit.title);
-      setPrice(productToEdit.price);
-      setQuantity(productToEdit.quantity);
-      setCategory(productToEdit.category);
+      setTitle(productToEdit.title || "");
+      setPrice(productToEdit.price || "");
+      setQuantity(productToEdit.quantity || "");
+      setCategoryId(productToEdit.category?.id || "");
       setType(productToEdit.forExchange ? "Troca" : "Venda");
-      setDescription(productToEdit.description);
+      setDescription(productToEdit.description || "");
       setImagePreviewUrl(productToEdit.imageUrl || "");
     } else {
       clearForm();
@@ -29,7 +37,7 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
     setTitle("");
     setPrice("");
     setQuantity("");
-    setCategory("");
+    setCategoryId("");
     setType("Venda");
     setDescription("");
     setImagePreviewUrl("");
@@ -81,17 +89,17 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (!title || !price || !quantity || !category) {
+    if (!title || !price || !quantity || !categoryId) {
       alert("Preencha todos os campos obrigatórios.");
       return;
     }
 
     const payload = {
-      id: productToEdit?.id, 
+      id: productToEdit?.id,
       title,
       price: Number(price),
       quantity: Number(quantity),
-      category,
+      categoryId: Number(categoryId),
       description,
       forExchange: type === "Troca",
       imageUrl: imagePreviewUrl,
@@ -133,14 +141,13 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
         </div>
 
         <div className={styles.inlineGroup}>
-          <select value={category} onChange={(e) => setCategory(e.target.value)} required>
-            <option value="">Categoria</option>
-            <option value="BOOK">Livro</option>
-            <option value="UNIFORM">Uniforme</option>
-            <option value="PERIPHERAL">Periférico</option>
-            <option value="BACKPACK">Mochila</option>
-            <option value="CALCULATOR">Calculadora</option>
-            <option value="OTHERS">Outros</option>
+          <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} required>
+            <option value="">Selecione uma categoria</option>
+            {categories.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
           </select>
 
           <select value={type} onChange={(e) => setType(e.target.value)}>

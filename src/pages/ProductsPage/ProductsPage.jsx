@@ -70,7 +70,14 @@ function ProductsPage() {
   };
 
   const handleEdit = (product) => {
-    setEditingProduct(product);
+    const productForEdit = {
+      ...product,
+      category: product.category
+        ? (typeof product.category === "object" ? product.category : { id: product.category })
+        : null,
+    };
+
+    setEditingProduct(productForEdit);
     setShowForm(true);
   };
 
@@ -81,8 +88,8 @@ function ProductsPage() {
 
   const filtered = Array.isArray(products)
     ? products.filter((p) =>
-        (p.title || "").toLowerCase().includes(search.toLowerCase())
-      )
+      (p.title || "").toLowerCase().includes(search.toLowerCase())
+    )
     : [];
 
   return (

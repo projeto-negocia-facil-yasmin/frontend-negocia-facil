@@ -79,8 +79,10 @@ function ProductCard({
         </div>
 
         <div className={styles.infoRow}>
-          <span className={styles.category}>{category}</span>
-          <span className={styles.exchange}>{forExchange ? "Troca" : "Venda"}</span>
+          <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+            <span className={styles.category}>{category}</span>
+            <span className={styles.exchange}>{forExchange ? "Troca" : "Venda"}</span>
+          </div>
         </div>
 
         <p className={styles.description}>{description}</p>
