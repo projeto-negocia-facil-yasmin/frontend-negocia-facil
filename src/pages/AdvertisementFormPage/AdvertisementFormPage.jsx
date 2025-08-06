@@ -47,7 +47,6 @@ export function AdvertisementFormPage() {
   return (
     <div className={styles.advertisementsPageContainer}>
       <div className={styles.advertisementEdition}>
-        <h1>Formulário de Anúncio</h1>
         <AdvertisementForm
           advertisement={advertisement}
           onUpdate={handleUpdate}

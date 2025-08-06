@@ -46,10 +46,10 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
   return (
     <div className={styles.advertisementForm}>
       {!isNew && (
-        <div>
+        <div className={styles.infoSection}>
           <p className={styles.paragraphText}>ID: {advertisement.id}</p>
-          <p className={styles.paragraphText}>{datetime.toLocaleDateString("pt-BR")}</p>
           <p className={styles.paragraphText}>
+            {datetime.toLocaleDateString("pt-BR")} -{" "}
             {datetime.toLocaleTimeString("pt-BR", {
               hour: "2-digit",
               minute: "2-digit",
@@ -57,43 +57,52 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
           </p>
         </div>
       )}
-
-      <p className={styles.paragraphText}>Quantidade de itens no anúncio: {products.length}</p>
-
+      <p className={styles.paragraphText}>
+        Quantidade de itens no anúncio: <strong>{products.length}</strong>
+      </p>
       <form className={styles.formDescription} onSubmit={updateAdvertisement}>
-        <label htmlFor="description" className={styles.labelText}>Descrição:</label>
+        <label htmlFor="description" className={styles.labelText}>
+          Descrição do Anúncio:
+        </label>
         <textarea
           id="description"
           name="description"
           className={styles.descriptionTextarea}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          placeholder="Digite a descrição do anúncio"
         />
 
-        <Button type="submit" text="Salvar" />
-      </form>
-
-      {products.length > 0 ? (
-        <div>
-          <h3 className={styles.heading3}>Produtos anunciados</h3>
-          <ProductList
-            products={products}
-            onDelete={removeProduct}
-            showMenuOptions={false}
-            showTrashButton={true}
-            showCheckBox={false}
+        <div className={styles.buttonGroup}>
+          <Button type="submit" text="Salvar" />
+          <Button
+            type="button"
+            text="Cancelar"
+            action={() => navigate("..", { replace: true })}
           />
         </div>
-      ) : (
-        <p className={styles.paragraphText}>Nenhum produto anunciado.</p>
-      )}
+      </form>
 
-      <ProductSelection selectedProducts={products} onSelect={setProducts} />
-      <Button
-        type="button"
-        text="Cancelar"
-        action={() => navigate("..", { replace: true })}
-      />
+      {/* Lista de produtos */}
+      <div className={styles.productSection}>
+        {products.length > 0 ? (
+          <>
+            <ProductList
+              products={products}
+              onDelete={removeProduct}
+              showMenuOptions={false}
+              showTrashButton={true}
+              showCheckBox={false}
+            />
+          </>
+        ) : (
+          <p className={styles.paragraphText}>Nenhum produto anunciado.</p>
+        )}
+      </div>
+      <div className={styles.productSelection}>
+        <h3 className={styles.heading3}>Adicionar Produtos</h3>
+        <ProductSelection selectedProducts={products} onSelect={setProducts} />
+      </div>
     </div>
   );
 }

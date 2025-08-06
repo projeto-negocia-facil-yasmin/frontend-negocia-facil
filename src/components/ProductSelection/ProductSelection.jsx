@@ -46,7 +46,6 @@ export function ProductSelection({ selectedProducts = [], onSelect }) {
 
   return (
     <div className={styles.container}>
-      <strong className={styles.title}>Produtos disponíveis para escolher</strong>
       <ProductList
         products={availableProducts}
         showMenuOptions={false}
