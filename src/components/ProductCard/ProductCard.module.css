@@ -58,11 +58,10 @@
 }
 
 .exchange {
-  margin-left: -5px;
+  margin-left: 10px;
   display: flex;
   align-items: center;
 }
-
 
 .description {
   margin-top: 8px;

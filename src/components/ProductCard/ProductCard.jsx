@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { CategoryAPI } from "../../services/CategoryAPI";
 import styles from "./ProductCard.module.css";
 
 function ProductCard({
@@ -15,13 +17,26 @@ function ProductCard({
     title,
     price,
     quantity,
-    category,
+    categoryId,
     forExchange,
     description,
     imageUrl,
   } = product;
 
   const [menuOpen, setMenuOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    CategoryAPI.getAll()
+      .then(setCategories)
+      .catch(() => setCategories([]));
+  }, []);
+
+  const categoryObj = categories.find((c) => c.id === categoryId);
+  const categoryName = categoryObj ? categoryObj.name : "Sem categoria";
+  
+  const location = useLocation();
+  const isAdvertisementPage = location.pathname.includes("/advertisement");
 
   return (
     <div className={styles.card}>
@@ -40,11 +55,12 @@ function ProductCard({
               />
             )}
 
-            {showMenuOptions && (
+            {showMenuOptions && !isAdvertisementPage && (
               <div className={styles.menuContainer}>
                 <button
                   className={styles.menuButton}
                   onClick={() => setMenuOpen((prev) => !prev)}
+                  aria-label="Abrir menu de opções"
                 >
                   ⋮
                 </button>
@@ -75,13 +91,15 @@ function ProductCard({
               currency: "BRL",
             })}
           </span>
-          <span className={styles.qty}>qtd:{quantity}</span>
+          <span className={styles.qty}>qtd: {quantity}</span>
         </div>
 
         <div className={styles.infoRow}>
           <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
-            <span className={styles.category}>{category}</span>
-            <span className={styles.exchange}>{forExchange ? "Troca" : "Venda"}</span>
+            <span className={styles.category}>{categoryName}</span>
+            <span className={styles.exchange}>
+              {forExchange ? "Troca" : "Venda"}
+            </span>
           </div>
         </div>
 

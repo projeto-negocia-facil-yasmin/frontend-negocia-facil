@@ -74,16 +74,15 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
         />
 
         <div className={styles.buttonGroup}>
-          <Button type="submit" text="Salvar" />
           <Button
             type="button"
             text="Cancelar"
             action={() => navigate("..", { replace: true })}
           />
+          <Button type="submit" text="Salvar" />
         </div>
       </form>
 
-      {/* Lista de produtos */}
       <div className={styles.productSection}>
         {products.length > 0 ? (
           <>

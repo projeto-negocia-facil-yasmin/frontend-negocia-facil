@@ -1,17 +1,86 @@
+.advertisementsPageContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
 .advertisementsPage {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  width: 600px;
+  width: 100%;
+  max-width: 600px;
 }
 
-.mensagemDeAviso {
-  color: antiquewhite;
+.headerRow {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  width: 100%;
+  padding: 0 20px;
+  margin-bottom: 0px;
+}
+
+.filterButton {
+  position: absolute;
+  right: 195px;
+  top: 45px;
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  background-color: #cfcfcf;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+
+
+.filterDropdown {
+  position: absolute;
+  top: 90px;
+  right: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  width: 240px;
+  z-index: 1000;
+}
+
+.filterDropdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filterDropdown li {
+  display: flex;
+  align-items: center;
+}
+
+.filterDropdown label {
+  font-size: 0.95rem;
+  color: #333;
+  display: flex;
+  gap: 8px;
+}
+
+.filterDropdown button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .advertisementsList {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
   gap: 30px;
 }
