@@ -96,17 +96,18 @@ export default function RulesList() {
             ))}
           </ul>
         )}
-      </div>
 
-      {admin && (
-        <button
-          className={styles.btnNewRule}
-          onClick={() => navigate(`${basePath}/new`)}
-          aria-label="Adicionar nova regra"
-        >
-          Nova Regra
-        </button>
-      )}
+        {admin && (
+          <button
+            className={styles.btnNewRule}
+            onClick={() => navigate(`${basePath}/new`)}
+            aria-label="Adicionar nova regra"
+            type="button"
+          >
+            Nova Regra
+          </button>
+        )}
+      </div>
     </div>
   );
 }

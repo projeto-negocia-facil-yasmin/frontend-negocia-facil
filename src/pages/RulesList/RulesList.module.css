@@ -1,38 +1,41 @@
 .container {
   display: flex;
   justify-content: center;
-  padding: 40px 20px;
-  background-color: #f0f2f5;
-  min-height: 80vh;
+  padding: 40px 24px;
+  background-color: #f4f6f8;
+  min-height: 85vh;
+  box-sizing: border-box;
 }
 
 .card {
+  position: relative;
   background-color: #fff;
-  padding: 30px 40px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  max-width: 700px;
   width: 100%;
+  max-width: 960px;
+  padding: 32px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  position: relative;
+  gap: 28px;
+  box-sizing: border-box;
 }
 
 h1 {
-  margin: 0 0 15px 0;
-  color: #333;
-  font-weight: 600;
-  font-size: 1.8rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #222;
+  margin: 0 0 16px 0;
+  text-align: center;
 }
 
 ul {
   list-style: none;
-  padding-left: 0;
   margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
 }
 
 .ruleItem {
@@ -40,93 +43,106 @@ ul {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f9fafb;
-  padding: 15px 20px;
-  border-radius: 6px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  background-color: #f8f9fa; 
+  padding: 20px 28px;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  width: 100%; 
+  box-sizing: border-box;
+}
+
+.ruleItem:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
 }
 
 .ruleItem > div:first-child {
-  max-width: 70%;
+  max-width: 85%;
+  text-align: left;
 }
 
 .ruleItemTitle {
-  display: block;
+  font-size: 1.2rem;
   font-weight: 700;
-  font-size: 1.1rem;
-  color: #222;
+  color: #111;
   margin-bottom: 6px;
+  user-select: none;
 }
 
 .ruleItemDescription {
-  margin: 0;
+  font-size: 1rem;
   color: #555;
-  font-size: 0.95rem;
+  line-height: 1.5;
+  user-select: none;
 }
 
 .dropdownButton {
   background: none;
   border: none;
   font-size: 22px;
+  color: #555;
+  padding: 6px 10px;
+  border-radius: 8px;
   cursor: pointer;
-  color: #333;
-  padding: 4px 8px;
-  border-radius: 4px;
-  transition: background-color 0.2s ease;
-  position: relative;
+  transition: background-color 0.25s ease, color 0.25s ease;
+  user-select: none;
 }
 
 .dropdownButton:hover {
-  background-color: #e0e0e0;
+  background-color: #e9ecef;
+  color: #333;
 }
 
 .dropdownMenu {
   position: absolute;
-  top: 32px;
+  top: 40px;
   right: 0;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
   display: flex;
   flex-direction: column;
+  min-width: 160px;
   z-index: 1000;
-  min-width: 140px;
 }
 
 .dropdownMenu button {
   background: none;
   border: none;
-  padding: 10px 16px;
+  padding: 14px 20px;
+  font-size: 15px;
+  color: #444;
   text-align: left;
-  font-size: 14px;
-  color: #333;
   cursor: pointer;
   width: 100%;
+  transition: background-color 0.2s ease;
+  user-select: none;
 }
 
 .dropdownMenu button:hover {
-  background-color: #f0f0f0;
+  background-color: #f5f5f5;
+  color: #111;
 }
 
 .btnNewRule {
-  position: fixed;
-  bottom: 100px;
-  left: 42%;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
   transform: translateX(-50%);
-  background-color: #007bff;
-  color: white;
-  font-weight: 600;
+  background-color:  #bdbdbd;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.7rem;
+  padding: 14px 44px;
   border: none;
-  border-radius: 30px;
-  padding: 12px 36px;
+  border-radius: 32px;
   cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.2s ease;
-  z-index: 1000;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.15s ease;
+  user-select: none;
+  z-index: 10;
 }
 
 .btnNewRule:hover {
-  background-color: #0056b3;
+  background-color:  #bdbdbd;
+  transform: translateX(-50%) scale(1.05);
 }

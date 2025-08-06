@@ -53,9 +53,8 @@ function AdvertisementsPage() {
               <SimpleAdvertisementCard
                 key={ad.id}
                 id={ad.id}
-                creationTime={ad.createdAt}
-                description={ad.description}
-                itemsCount={ad.products.length}
+                creationTime={new Date(ad.createdAt).toLocaleDateString("pt-BR")}
+                products={ad.products}
                 onDelete={() => handleDelete(ad.id)}
                 onEdit={() => handleEdit(ad.id)}
               />

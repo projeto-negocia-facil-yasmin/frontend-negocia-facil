@@ -7,10 +7,11 @@
   align-items: flex-start;
   background-color: #f8f9fa;
   border-radius: 8px;
-  padding: 10px;
+  padding: 20px 16px;
   margin-bottom: 20px;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
+
 .cardHeader {
   display: flex;
   flex-direction: column;
@@ -18,6 +19,7 @@
   font-size: 18px;
   margin-bottom: 8px;
   color: #333;
+  width: 100%;
 }
 
 .cardSubinfo {
@@ -27,55 +29,34 @@
   color: #555;
   gap: 16px;
   margin-bottom: 12px;
+  width: 100%;
 }
 
 p, h2 {
   color: #333;
   text-align: left;
+  margin: 0;
 }
 
 .advertisementDropdown {
-  position: absolute;  
+  position: absolute;
   top: 10px;
   right: 10px;
   background: none;
   border: none;
-  font-size: 22px;
+  font-size: 14px;
   cursor: pointer;
   color: #333;
-  padding: 4px 8px;
+  padding: 1px 4px;
   border-radius: 4px;
   transition: background-color 0.2s ease;
   z-index: 10;
 }
 
-.dropdownMenu {
-  position: absolute;
-  top: 36px;
-  right: 10px;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+.productsContainer {
   display: flex;
-  flex-direction: column;
-  z-index: 1000;
-  min-width: 140px;
-  overflow: hidden;
-}
-
-.dropdownMenu button {
-  background: none;
-  border: none;
-  padding: 10px 16px;
-  text-align: left;
-  font-size: 14px;
-  color: #333;
-  cursor: pointer;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
   width: 100%;
-  transition: background-color 0.2s ease;
-}
-
-.dropdownMenu button:hover {
-  background-color: #f0f0f0;
 }

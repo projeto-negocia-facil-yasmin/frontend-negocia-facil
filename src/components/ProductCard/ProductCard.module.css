@@ -46,6 +46,7 @@
   font-size: 14px;
   color: #555;
   align-items: center;
+  justify-content: flex-start;
 }
 
 .price {
@@ -57,10 +58,11 @@
 }
 
 .exchange {
-  margin-left: 10;
+  margin-left: -5px;
   display: flex;
   align-items: center;
 }
+
 
 .description {
   margin-top: 8px;
