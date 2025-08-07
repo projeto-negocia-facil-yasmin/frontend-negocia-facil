@@ -6,10 +6,11 @@ import styles from "./AdvertisementsPage.module.css";
 import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button/Button.jsx";
 import toast from "react-hot-toast";
+import { getUserId } from "../../utils/auth.js";
 
 function AdvertisementsPage() {
   const navigate = useNavigate();
-
+  const userId = getUserId();
   const [advertisements, setAdvertisements] = useState([]);
   const [allAdvertisements, setAllAdvertisements] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -85,7 +86,6 @@ function AdvertisementsPage() {
           </button>
         </div>
 
-
         {filterOpen && (
           <div className={styles.filterDropdown}>
             <ul>
@@ -118,16 +118,20 @@ function AdvertisementsPage() {
           <p>Nenhum anúncio encontrado.</p>
         ) : (
           <div className={styles.advertisementsList}>
-            {advertisements.map((ad) => (
-              <SimpleAdvertisementCard
-                key={ad.id}
-                id={ad.id}
-                creationTime={new Date(ad.createdAt).toLocaleDateString("pt-BR")}
-                products={ad.products}
-                onDelete={() => handleDelete(ad.id)}
-                onEdit={() => handleEdit(ad.id)}
-              />
-            ))}
+            {advertisements.map((ad) => {
+              const isOwner = userId === String(ad.owner?.id);
+
+              return (
+                <SimpleAdvertisementCard
+                  key={ad.id}
+                  id={ad.id}
+                  creationTime={new Date(ad.createdAt).toLocaleDateString("pt-BR")}
+                  products={ad.products}
+                  onDelete={isOwner ? () => handleDelete(ad.id) : undefined}
+                  onEdit={isOwner ? () => handleEdit(ad.id) : undefined}
+                />
+              );
+            })}
           </div>
         )}
 

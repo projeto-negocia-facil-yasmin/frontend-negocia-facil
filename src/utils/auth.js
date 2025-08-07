@@ -17,6 +17,11 @@ export function isAdmin() {
   return roles.includes("ROLE_ADMIN");
 }
 
+export function getUserId() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  return user?.id;
+}
+
 export function confirmAction(message) {
   return window.confirm(message);
 }

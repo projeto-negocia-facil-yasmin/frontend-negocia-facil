@@ -12,24 +12,35 @@ function SimpleAdvertisementCard({
 }) {
   const [showMenu, setShowMenu] = useState(false);
 
+  const isOwner = onEdit && onDelete;
+
   return (
     <div className={styles.userAdvertisementCard}>
-      <div className={styles.cardHeader}>
-        <button
-          className={styles.advertisementDropdown}
-          onClick={() => setShowMenu((prev) => !prev)}
-          aria-label="Abrir menu de opções"
-        >
-          <MoreVertical />
-        </button>
+      {isOwner && (
+        <div className={styles.cardHeader}>
+          <button
+            className={styles.advertisementDropdown}
+            onClick={() => setShowMenu((prev) => !prev)}
+            aria-label="Abrir menu de opções"
+          >
+            <MoreVertical />
+          </button>
 
-        {showMenu && (
-          <div className={styles.dropdownMenu}>
-            <button className={styles.dropdownMenuButton} onClick={onEdit}>Editar</button>
-            <button className={styles.dropdownMenuButton} onClick={() => onDelete(id)}>Excluir</button>
-          </div>
-        )}
-      </div>
+          {showMenu && (
+            <div className={styles.dropdownMenu}>
+              <button className={styles.dropdownMenuButton} onClick={onEdit}>
+                Editar
+              </button>
+              <button
+                className={styles.dropdownMenuButton}
+                onClick={() => onDelete(id)}
+              >
+                Excluir
+              </button>
+            </div>
+          )}
+        </div>
+      )}
 
       <div className={styles.productsContainer}>
         {products.length > 0 ? (
