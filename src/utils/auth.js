@@ -18,8 +18,14 @@ export function isAdmin() {
 }
 
 export function getUserId() {
-  const user = JSON.parse(localStorage.getItem("user"));
-  return user?.id;
+  const userJson = localStorage.getItem("user");
+
+  if (userJson && userJson.trim().startsWith("{")) {
+    const user = JSON.parse(userJson);
+    return user?.id ?? null;
+  }
+
+  return null;
 }
 
 export function confirmAction(message) {
