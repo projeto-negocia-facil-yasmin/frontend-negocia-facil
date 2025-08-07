@@ -11,11 +11,9 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
   const datetime = new Date(advertisement.createdAt);
 
   const [products, setProducts] = useState(advertisement.products || []);
-  const [description, setDescription] = useState(advertisement.description || "");
 
   useEffect(() => {
     setProducts(advertisement.products || []);
-    setDescription(advertisement.description || "");
   }, [advertisement]);
 
   async function updateAdvertisement(event) {
@@ -26,7 +24,6 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
     }
     const userId = products[0]?.userId;
 
-    advertisement.description = description;
     advertisement.products = products;
     advertisement.advertiser = { id: userId };
 
@@ -47,8 +44,8 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
     <div className={styles.advertisementForm}>
       {!isNew && (
         <div className={styles.infoSection}>
-          <p className={styles.paragraphText}>ID: {advertisement.id}</p>
-          <p className={styles.paragraphText}>
+          <p>ID: {advertisement.id}</p>
+          <p>
             {datetime.toLocaleDateString("pt-BR")} -{" "}
             {datetime.toLocaleTimeString("pt-BR", {
               hour: "2-digit",
@@ -57,22 +54,12 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
           </p>
         </div>
       )}
-      <p className={styles.paragraphText}>
+
+      <p>
         Quantidade de itens no anúncio: <strong>{products.length}</strong>
       </p>
-      <form className={styles.formDescription} onSubmit={updateAdvertisement}>
-        <label htmlFor="description" className={styles.labelText}>
-          Descrição do Anúncio:
-        </label>
-        <textarea
-          id="description"
-          name="description"
-          className={styles.descriptionTextarea}
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Digite a descrição do anúncio"
-        />
 
+      <form onSubmit={updateAdvertisement}>
         <div className={styles.buttonGroup}>
           <Button
             type="button"
@@ -85,21 +72,20 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
 
       <div className={styles.productSection}>
         {products.length > 0 ? (
-          <>
-            <ProductList
-              products={products}
-              onDelete={removeProduct}
-              showMenuOptions={false}
-              showTrashButton={true}
-              showCheckBox={false}
-            />
-          </>
+          <ProductList
+            products={products}
+            onDelete={removeProduct}
+            showMenuOptions={false}
+            showTrashButton={true}
+            showCheckBox={false}
+          />
         ) : (
-          <p className={styles.paragraphText}>Nenhum produto anunciado.</p>
+          <p>Nenhum produto anunciado.</p>
         )}
       </div>
+
       <div className={styles.productSelection}>
-        <h3 className={styles.heading3}>Adicionar Produtos</h3>
+        <h3>Adicionar Produtos</h3>
         <ProductSelection selectedProducts={products} onSelect={setProducts} />
       </div>
     </div>

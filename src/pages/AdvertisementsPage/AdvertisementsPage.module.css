@@ -34,8 +34,6 @@
   cursor: pointer;
 }
 
-
-
 .filterDropdown {
   position: absolute;
   top: 90px;
@@ -83,4 +81,22 @@
   display: flex;
   flex-direction: column;
   gap: 30px;
+}
+
+.addButton {
+  position: fixed;
+  bottom: 40px;
+  right: 118px;
+  background-color: #d9d9d9;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  z-index: 1000;
+}
+
+.addButtonHover:hover {
+  background-color: #bcbcbc;
 }

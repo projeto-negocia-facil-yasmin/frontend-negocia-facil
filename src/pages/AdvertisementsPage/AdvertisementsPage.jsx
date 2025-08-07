@@ -136,7 +136,12 @@ function AdvertisementsPage() {
           </div>
         )}
 
-        <Button text={"Novo anúncio"} action={handleNewAdvertisement} />
+        <button
+          className={`${styles.addButton} ${styles.addButtonHover}`}
+          onClick={handleNewAdvertisement}
+        >
+          Novo anúncio
+        </button>
       </div>
     </div>
   );

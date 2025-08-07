@@ -10,12 +10,6 @@
   gap: 8px;
 }
 
-.formDescription {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
 .labelText {
   font-size: 13px;
   font-weight: 600;
@@ -23,29 +17,6 @@
   margin-bottom: 2px;
   text-align: left;
   align-self: flex-start;
-}
-
-.paragraphText {
-  font-size: 13px;
-  color: #444;
-  margin-bottom: 2px;
-}
-
-.heading3 {
-  font-size: 16px;
-  font-weight: 700;
-  color: #222;
-  margin-bottom: 6px;
-}
-
-.descriptionTextarea {
-  width: 100%;
-  min-height: 60px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  resize: vertical;
-  font-size: 14px;
 }
 
 .buttonGroup {
