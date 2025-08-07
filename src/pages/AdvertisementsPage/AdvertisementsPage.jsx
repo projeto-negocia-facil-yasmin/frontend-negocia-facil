@@ -119,7 +119,7 @@ function AdvertisementsPage() {
         ) : (
           <div className={styles.advertisementsList}>
             {advertisements.map((ad) => {
-              const isOwner = userId === String(ad.owner?.id);
+              const isOwner = userId === ad.advertiser?.id;
 
               return (
                 <SimpleAdvertisementCard
@@ -129,6 +129,7 @@ function AdvertisementsPage() {
                   products={ad.products}
                   onDelete={isOwner ? () => handleDelete(ad.id) : undefined}
                   onEdit={isOwner ? () => handleEdit(ad.id) : undefined}
+                  isOwner={isOwner}
                 />
               );
             })}

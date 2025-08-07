@@ -9,10 +9,9 @@ function SimpleAdvertisementCard({
   products,
   onEdit,
   onDelete,
+  isOwner = false,
 }) {
   const [showMenu, setShowMenu] = useState(false);
-
-  const isOwner = onEdit && onDelete;
 
   return (
     <div className={styles.userAdvertisementCard}>
@@ -28,15 +27,19 @@ function SimpleAdvertisementCard({
 
           {showMenu && (
             <div className={styles.dropdownMenu}>
-              <button className={styles.dropdownMenuButton} onClick={onEdit}>
-                Editar
-              </button>
-              <button
-                className={styles.dropdownMenuButton}
-                onClick={() => onDelete(id)}
-              >
-                Excluir
-              </button>
+              {onEdit && (
+                <button className={styles.dropdownMenuButton} onClick={onEdit}>
+                  Editar
+                </button>
+              )}
+              {onDelete && (
+                <button
+                  className={styles.dropdownMenuButton}
+                  onClick={() => onDelete(id)}
+                >
+                  Excluir
+                </button>
+              )}
             </div>
           )}
         </div>
