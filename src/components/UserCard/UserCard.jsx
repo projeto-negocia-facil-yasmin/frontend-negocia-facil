@@ -4,7 +4,15 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import api from '../../services/api';
 
-export default function UserCard({ id, imgUrl, userName, email, onUserDeleted, loggedUserId }) {
+export default function UserCard({
+  id,
+  imgUrl,
+  userName,
+  email,
+  isAdmin = false,
+  onUserDeleted,
+  loggedUserId
+}) {
   const navigate = useNavigate();
 
   async function confirmDelete() {
@@ -16,7 +24,7 @@ export default function UserCard({ id, imgUrl, userName, email, onUserDeleted, l
       toast.success("Usuário excluído com sucesso!");
       if (onUserDeleted) onUserDeleted(id);
     } catch (error) {
-      toast.error(error.message || "Erro ao excluir usuário");
+      toast.error(error.response?.data?.message || error.message || "Erro ao excluir usuário");
     }
   }
 
@@ -33,27 +41,29 @@ export default function UserCard({ id, imgUrl, userName, email, onUserDeleted, l
   }
 
   return (
-    <div className={styles.userCard}>
+    <li className={styles.userCard}>
       <div className={styles.userInfo}>
         <img
           src={imgUrl || "https://conteudo.imguol.com.br/blogs/174/files/2018/05/iStock-648229868-1024x909.jpg"}
-          alt={`Profile photo of ${userName}`}
+          alt={`Foto de perfil de ${userName}`}
           width={50}
           height={50}
         />
         <div className={styles.userNameAndEmailCard}>
-          <span>{userName}</span>
+          <span>
+            {userName} {isAdmin ? "(Administrador)" : "(Usuário Comum)"}
+          </span>
           <span>{email}</span>
         </div>
       </div>
       <div className={styles.buttonsCard}>
-        <button onClick={handleEditClick} className={styles.editButton}>
+        <button onClick={handleEditClick} className={styles.editButton} title="Editar usuário">
           <Edit size={20} />
         </button>
-        <button onClick={confirmDelete} className={styles.deleteButton}>
+        <button onClick={confirmDelete} className={styles.deleteButton} title="Excluir usuário">
           <Trash size={20} />
         </button>
       </div>
-    </div>
+    </li>
   );
 }

@@ -18,9 +18,10 @@
 }
 
 .title {
-    width: 100%;
+    width: 105%;
     font-size: larger;
     font-weight: bolder;
+    color: white;
 }
 
 .input {
@@ -61,4 +62,3 @@
 .link:hover {
     text-decoration: underline;
 }
-

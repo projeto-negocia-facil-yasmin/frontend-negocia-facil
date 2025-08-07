@@ -26,6 +26,9 @@ function ProductCard({
   const [menuOpen, setMenuOpen] = useState(false);
   const [categories, setCategories] = useState([]);
 
+  const location = useLocation();
+  const isAdvertisementPage = location.pathname.includes("/advertisement");
+
   useEffect(() => {
     CategoryAPI.getAll()
       .then(setCategories)
@@ -34,9 +37,6 @@ function ProductCard({
 
   const categoryObj = categories.find((c) => c.id === categoryId);
   const categoryName = categoryObj ? categoryObj.name : "Sem categoria";
-  
-  const location = useLocation();
-  const isAdvertisementPage = location.pathname.includes("/advertisement");
 
   return (
     <div className={styles.card}>

@@ -54,6 +54,7 @@ function UsersList() {
             imgUrl={user.imgUrl}
             userName={user.fullName}
             email={user.username}
+            isAdmin={user.roles?.includes("ROLE_ADMIN")}
             loggedUserId={loggedUserId}
             onUserDeleted={handleUserDeleted}
           />
