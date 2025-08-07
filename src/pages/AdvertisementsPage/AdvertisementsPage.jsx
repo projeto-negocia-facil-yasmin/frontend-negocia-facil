@@ -4,7 +4,6 @@ import { CategoryAPI } from "../../services/CategoryAPI.js";
 import SimpleAdvertisementCard from "../../components/SimpleAdvertisementCard/SimpleAdvertisementCard.jsx";
 import styles from "./AdvertisementsPage.module.css";
 import { useNavigate } from "react-router-dom";
-import Button from "../../components/Button/Button.jsx";
 import toast from "react-hot-toast";
 import { getUserId } from "../../utils/auth.js";
 
@@ -113,9 +112,8 @@ function AdvertisementsPage() {
             <button onClick={applyFilters}>Aplicar filtros</button>
           </div>
         )}
-
         {advertisements.length === 0 ? (
-          <p>Nenhum anúncio encontrado.</p>
+          <p className={styles.noAdvertisementsMessage}>Nenhum anúncio encontrado.</p>
         ) : (
           <div className={styles.advertisementsList}>
             {advertisements.map((ad) => {

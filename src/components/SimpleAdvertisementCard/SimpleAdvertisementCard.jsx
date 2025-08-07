@@ -26,16 +26,23 @@ function SimpleAdvertisementCard({
           </button>
 
           {showMenu && (
-            <div className={styles.dropdownMenu}>
+            <div className={styles.advertisementDropdownMenu}>
               {onEdit && (
-                <button className={styles.dropdownMenuButton} onClick={onEdit}>
+                <button
+                  onClick={() => {
+                    onEdit(id);
+                    setShowMenu(false);
+                  }}
+                >
                   Editar
                 </button>
               )}
               {onDelete && (
                 <button
-                  className={styles.dropdownMenuButton}
-                  onClick={() => onDelete(id)}
+                  onClick={() => {
+                    onDelete(id);
+                    setShowMenu(false);
+                  }}
                 >
                   Excluir
                 </button>
