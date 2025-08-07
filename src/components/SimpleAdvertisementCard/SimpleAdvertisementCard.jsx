@@ -5,13 +5,12 @@ import { useNavigate } from "react-router-dom";
 import ProductCard from "../ProductCard/ProductCard";
 
 function SimpleAdvertisementCard({
-  id,
+  id,            
   creationTime,
   products,
   onEdit,
   onDelete,
   isOwner = false,
-  ownerId,
 }) {
   const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
@@ -67,11 +66,11 @@ function SimpleAdvertisementCard({
         Criado em <time dateTime={creationTime}>{creationTime}</time>
       </p>
 
-      {!isOwner && ownerId && (
+      {!isOwner && (
         <div className={styles.contactButtonWrapper}>
           <button
             className={styles.contactButton}
-            onClick={() => navigate(`/contact/${ownerId}`)}
+            onClick={() => navigate(`/contact/${id}`)}
           >
             Contatar Anunciante
           </button>

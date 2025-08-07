@@ -4,7 +4,7 @@ import axios from "axios";
 import styles from "./ContactAdvertiserPage.module.css";
 
 export default function ContactAdvertiserPage() {
-  const { advertiserId } = useParams();
+  const { advertisementId } = useParams();
   const [advertiser, setAdvertiser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -13,7 +13,7 @@ export default function ContactAdvertiserPage() {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          `http://localhost:8080/api/v1/users/${advertiserId}/public`,
+          `http://localhost:8080/api/v1/advertisements/${advertisementId}/advertiser`,
           {
             headers: token ? { Authorization: `Bearer ${token}` } : undefined,
           }
@@ -26,7 +26,7 @@ export default function ContactAdvertiserPage() {
       }
     }
     fetchAdvertiser();
-  }, [advertiserId]);
+  }, [advertisementId]);
 
   if (loading) return <p>Carregando...</p>;
 

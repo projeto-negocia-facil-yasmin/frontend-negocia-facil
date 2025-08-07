@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import { toast } from "react-hot-toast";
 import ProductControls from "../../components/ProductsControls/ProductControls";
 import ProductForm from "../../components/ProductForm/ProductForm";

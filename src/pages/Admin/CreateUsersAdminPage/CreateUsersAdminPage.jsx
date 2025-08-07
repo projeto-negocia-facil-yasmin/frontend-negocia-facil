@@ -30,4 +30,5 @@ function CreateUsersAdminPage() {
         </div>
     )
 }
+
 export default CreateUsersAdminPage

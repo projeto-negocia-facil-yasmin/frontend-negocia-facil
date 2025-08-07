@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import ProductList from "../ProductList/ProductList";
 import { ProductAPI } from "../../services/ProductAPI";
 import styles from "./ProductSelection.module.css";

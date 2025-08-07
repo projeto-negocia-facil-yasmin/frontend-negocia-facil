@@ -69,7 +69,7 @@ export default function AppRoutes() {
 
         <Route path="home" element={<Home />} />
         <Route
-          path="contact/:advertiserId"
+          path="contact/:advertisementId"
           element={
             <SidebarLayout>
               <ContactAdvertiserPage />
