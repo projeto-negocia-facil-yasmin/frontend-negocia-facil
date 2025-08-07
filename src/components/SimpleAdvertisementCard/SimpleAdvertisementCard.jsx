@@ -1,6 +1,7 @@
 import styles from "./SimpleAdvertisementCard.module.css";
 import { MoreVertical } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ProductCard from "../ProductCard/ProductCard";
 
 function SimpleAdvertisementCard({
@@ -10,8 +11,10 @@ function SimpleAdvertisementCard({
   onEdit,
   onDelete,
   isOwner = false,
+  ownerId,
 }) {
   const [showMenu, setShowMenu] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className={styles.userAdvertisementCard}>
@@ -26,23 +29,16 @@ function SimpleAdvertisementCard({
           </button>
 
           {showMenu && (
-            <div className={styles.advertisementDropdownMenu}>
+            <div className={styles.dropdownMenu}>
               {onEdit && (
-                <button
-                  onClick={() => {
-                    onEdit(id);
-                    setShowMenu(false);
-                  }}
-                >
+                <button className={styles.dropdownMenuButton} onClick={onEdit}>
                   Editar
                 </button>
               )}
               {onDelete && (
                 <button
-                  onClick={() => {
-                    onDelete(id);
-                    setShowMenu(false);
-                  }}
+                  className={styles.dropdownMenuButton}
+                  onClick={() => onDelete(id)}
                 >
                   Excluir
                 </button>
@@ -70,6 +66,17 @@ function SimpleAdvertisementCard({
       <p className={styles.creationTime}>
         Criado em <time dateTime={creationTime}>{creationTime}</time>
       </p>
+
+      {!isOwner && ownerId && (
+        <div className={styles.contactButtonWrapper}>
+          <button
+            className={styles.contactButton}
+            onClick={() => navigate(`/contact/${ownerId}`)}
+          >
+            Contatar Anunciante
+          </button>
+        </div>
+      )}
     </div>
   );
 }

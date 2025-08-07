@@ -14,7 +14,7 @@ import RulesList from "../pages/RulesList/RulesList.jsx";
 import RuleForm from "../pages/RuleForm/RuleForm.jsx";
 import Home from "../pages/Home/Home.jsx";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage.jsx";
-
+import ContactAdvertiserPage from "../pages/ContactAdvertiserPage/ContactAdvertiserPage.jsx";
 export default function AppRoutes() {
   return (
     <BrowserRouter>
@@ -66,6 +66,7 @@ export default function AppRoutes() {
         </Route>
 
         <Route path="home" element={<Home />} />
+        <Route path="contact/:advertiserId" element={<ContactAdvertiserPage />} />
       </Routes>
     </BrowserRouter>
   );

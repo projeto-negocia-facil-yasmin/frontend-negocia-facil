@@ -112,6 +112,7 @@ function AdvertisementsPage() {
             <button onClick={applyFilters}>Aplicar filtros</button>
           </div>
         )}
+
         {advertisements.length === 0 ? (
           <p className={styles.noAdvertisementsMessage}>Nenhum anúncio encontrado.</p>
         ) : (
@@ -128,6 +129,7 @@ function AdvertisementsPage() {
                   onDelete={isOwner ? () => handleDelete(ad.id) : undefined}
                   onEdit={isOwner ? () => handleEdit(ad.id) : undefined}
                   isOwner={isOwner}
+                  ownerId={ad.advertiser?.id}
                 />
               );
             })}
