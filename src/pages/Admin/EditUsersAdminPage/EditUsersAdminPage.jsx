@@ -17,7 +17,6 @@ function EditUsersAdminPage() {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
-        console.log(res.data);
         setUserData(res.data);
       } catch (err) {
         console.error("Erro ao buscar usuário:", err);
@@ -33,6 +32,7 @@ function EditUsersAdminPage() {
       password: data.password,
       fullName: data.fullName,
       enrollmentNumber: data.enrollmentNumber,
+      phone: data.phone,
     };
 
     try {

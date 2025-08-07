@@ -12,6 +12,7 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [enrollmentNumber, setEnrollmentNumber] = useState("");
+  const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleRegister = async (e) => {
@@ -23,6 +24,7 @@ export default function Register() {
       password,
       fullName,
       enrollmentNumber,
+      phone,
     };
 
     try {
@@ -107,6 +109,18 @@ export default function Register() {
           className={styles.input}
           required
           aria-label="matrícula"
+        />
+
+        <input
+          type="text"
+          placeholder="Telefone (11 dígitos, somente números)"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          className={styles.input}
+          required
+          pattern="^\d{11}$"
+          title="O telefone deve conter exatamente 11 dígitos numéricos, sem espaços ou símbolos"
+          aria-label="telefone"
         />
 
         <Button type="submit" text={loading ? "Cadastrando..." : "Cadastrar"} disabled={loading} />
