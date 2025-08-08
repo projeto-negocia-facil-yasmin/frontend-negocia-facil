@@ -1,3 +1,4 @@
+import React from "react";
 import styles from "./ProductControls.module.css";
 
 function ProductControls({ search, onSearchChange, onAddClick }) {
