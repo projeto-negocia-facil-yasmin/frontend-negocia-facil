@@ -1,4 +1,5 @@
 import styles from './SidebarHeader.module.css'
+
 function SidebarHeader({imgUrl, userName}){
     return (
         <div className={styles.sidebarHeader}>
@@ -7,4 +8,5 @@ function SidebarHeader({imgUrl, userName}){
         </div>
     )
 }
+
 export default SidebarHeader

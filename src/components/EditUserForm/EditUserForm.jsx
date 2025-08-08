@@ -13,6 +13,7 @@ export default function EditUserForm({ user, action }) {
         username: user?.username || "",
         enrollmentNumber: user?.enrollmentNumber || "",
         password: "",
+        phone: user?.phone || "",
     });
 
     useEffect(() => {
@@ -21,6 +22,7 @@ export default function EditUserForm({ user, action }) {
             username: user?.username || "",
             enrollmentNumber: user?.enrollmentNumber || "",
             password: "",
+            phone: user?.phone || "",
         });
     }, [user]);
 
@@ -38,13 +40,55 @@ export default function EditUserForm({ user, action }) {
     return (
         <ErrorBoundary>
             <form className={styles.form} onSubmit={handleSubmit}>
-                <input name="fullName" value={formState.fullName} onChange={handleChange} required />
-                <input name="username" value={formState.username} onChange={handleChange} required />
-                <input name="enrollmentNumber" value={formState.enrollmentNumber} onChange={handleChange} required />
-                <input name="password" value={formState.password} onChange={handleChange} placeholder="Senha" type="password" required />
-                <Button text="Salvar Alterações" type={"submit"}/>
-                <Button text="Cancelar" action={() => {navigate("/admin/users")}}/>
+
+                <input
+                    name="fullName"
+                    value={formState.fullName}
+                    onChange={handleChange}
+                    required
+                    placeholder="Nome completo"
+                />
+
+                <input
+                    name="username"
+                    value={formState.username}
+                    onChange={handleChange}
+                    required
+                    placeholder="Email institucional"
+                    type="email"
+                />
+
+                <input
+                    name="phone"
+                    value={formState.phone}
+                    onChange={handleChange}
+                    required
+                    placeholder="Telefone (11 dígitos, só números)"
+                    type="tel"
+                    pattern="\d{11}"
+                    title="Telefone deve conter exatamente 11 dígitos numéricos"
+                />
+
+                <input
+                    name="enrollmentNumber"
+                    value={formState.enrollmentNumber}
+                    onChange={handleChange}
+                    required
+                    placeholder="Matrícula"
+                />
+
+                <input
+                    name="password"
+                    value={formState.password}
+                    onChange={handleChange}
+                    placeholder="Senha (deixe vazio para manter)"
+                    type="password"
+                />
+
+                <Button text="Salvar Alterações" type={"submit"} />
+                <Button text="Cancelar" action={() => { navigate("/admin/users") }} />
             </form>
+
         </ErrorBoundary>
     );
 }

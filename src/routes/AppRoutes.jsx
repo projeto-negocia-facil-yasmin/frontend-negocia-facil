@@ -14,6 +14,8 @@ import RulesList from "../pages/RulesList/RulesList.jsx";
 import RuleForm from "../pages/RuleForm/RuleForm.jsx";
 import Home from "../pages/Home/Home.jsx";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage.jsx";
+import ContactAdvertiserPage from "../pages/ContactAdvertiserPage/ContactAdvertiserPage.jsx";
+import SidebarLayout from "../layouts/SidebarLayout/SidebarLayout.jsx";
 
 export default function AppRoutes() {
   return (
@@ -66,6 +68,14 @@ export default function AppRoutes() {
         </Route>
 
         <Route path="home" element={<Home />} />
+        <Route
+          path="contact/:advertisementId"
+          element={
+            <SidebarLayout>
+              <ContactAdvertiserPage />
+            </SidebarLayout>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

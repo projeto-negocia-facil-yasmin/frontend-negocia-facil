@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 export function parseJwt(token) {
   try {
     const payload = token.split('.')[1];
@@ -13,4 +15,31 @@ export function isAdmin() {
   if (!token) return false;
   const { roles = [] } = parseJwt(token);
   return roles.includes("ROLE_ADMIN");
+}
+
+export function getUserId() {
+  const userJson = localStorage.getItem("user");
+
+  if (userJson && userJson.trim().startsWith("{")) {
+    const user = JSON.parse(userJson);
+    return user?.id ?? null;
+  }
+
+  return null;
+}
+
+export function confirmAction(message) {
+  return window.confirm(message);
+}
+
+export function success(msg) {
+  toast.success(msg);
+}
+
+export function error(msg) {
+  toast.error(msg);
+}
+
+export function info(msg) {
+  toast.info(msg);
 }

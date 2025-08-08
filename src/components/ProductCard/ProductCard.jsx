@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import "./ProductCard.css";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { CategoryAPI } from "../../services/CategoryAPI";
+import styles from "./ProductCard.module.css";
 
 function ProductCard({
   product,
@@ -15,21 +17,34 @@ function ProductCard({
     title,
     price,
     quantity,
-    category,
+    categoryId,
     forExchange,
     description,
     imageUrl,
   } = product;
 
   const [menuOpen, setMenuOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
+
+  const location = useLocation();
+  const isAdvertisementPage = location.pathname.includes("/advertisement");
+
+  useEffect(() => {
+    CategoryAPI.getAll()
+      .then(setCategories)
+      .catch(() => setCategories([]));
+  }, []);
+
+  const categoryObj = categories.find((c) => c.id === categoryId);
+  const categoryName = categoryObj ? categoryObj.name : "Sem categoria";
 
   return (
-    <div className="card">
-      {imageUrl && <img src={imageUrl} className="thumb" alt={title} />}
+    <div className={styles.card}>
+      {imageUrl && <img src={imageUrl} className={styles.thumb} alt={title} />}
 
-      <div className="body">
-        <div className="top-row">
-          <h3>{title}</h3>
+      <div className={styles.body}>
+        <div className={styles.topRow}>
+          <h3 className={styles.topRowTitle}>{title}</h3>
 
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             {showCheckBox && (
@@ -40,17 +55,18 @@ function ProductCard({
               />
             )}
 
-            {showMenuOptions && (
-              <div className="menu-container">
+            {showMenuOptions && !isAdvertisementPage && (
+              <div className={styles.menuContainer}>
                 <button
-                  className="menu-button"
+                  className={styles.menuButton}
                   onClick={() => setMenuOpen((prev) => !prev)}
+                  aria-label="Abrir menu de opções"
                 >
                   ⋮
                 </button>
 
                 {menuOpen && (
-                  <div className="dropdown-menu">
+                  <div className={styles.dropdownMenu}>
                     <button onClick={() => onEdit && onEdit(product)}>
                       Editar
                     </button>
@@ -63,29 +79,31 @@ function ProductCard({
             )}
 
             {!showMenuOptions && showTrashButton && (
-              <button onClick={() => onDelete && onDelete(product.id)}>
-                🗑
-              </button>
+              <button onClick={() => onDelete && onDelete(product.id)}>🗑</button>
             )}
           </div>
         </div>
 
-        <div className="info-row">
-          <span className="price">
+        <div className={styles.infoRow}>
+          <span className={styles.price}>
             {price.toLocaleString("pt-BR", {
               style: "currency",
               currency: "BRL",
             })}
           </span>
-          <span className="qty">qtd:{quantity}</span>
+          <span className={styles.qty}>qtd: {quantity}</span>
         </div>
 
-        <div className="info-row">
-          <span className="category">{category}</span>
-          <span className="exchange">{forExchange ? "Troca" : "Venda"}</span>
+        <div className={styles.infoRow}>
+          <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+            <span className={styles.category}>{categoryName}</span>
+            <span className={styles.exchange}>
+              {forExchange ? "Troca" : "Venda"}
+            </span>
+          </div>
         </div>
 
-        <p className="description">{description}</p>
+        <p className={styles.description}>{description}</p>
       </div>
     </div>
   );

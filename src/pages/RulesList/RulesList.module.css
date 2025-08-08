@@ -1,0 +1,148 @@
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 24px;
+  background-color: #f4f6f8;
+  min-height: 85vh;
+  box-sizing: border-box;
+}
+
+.card {
+  position: relative;
+  background-color: #fff;
+  width: 100%;
+  max-width: 960px;
+  padding: 32px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #222;
+  margin: 0 0 16px 0;
+  text-align: center;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.ruleItem {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f9fa; 
+  padding: 20px 28px;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  width: 100%; 
+  box-sizing: border-box;
+}
+
+.ruleItem:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.ruleItem > div:first-child {
+  max-width: 85%;
+  text-align: left;
+}
+
+.ruleItemTitle {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 6px;
+  user-select: none;
+}
+
+.ruleItemDescription {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.5;
+  user-select: none;
+}
+
+.dropdownButton {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #555;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease;
+  user-select: none;
+}
+
+.dropdownButton:hover {
+  background-color: #e9ecef;
+  color: #333;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+  z-index: 1000;
+}
+
+.dropdownMenu button {
+  background: none;
+  border: none;
+  padding: 14px 20px;
+  font-size: 15px;
+  color: #444;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.2s ease;
+  user-select: none;
+}
+
+.dropdownMenu button:hover {
+  background-color: #f5f5f5;
+  color: #111;
+}
+
+.btnNewRule {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color:  #bdbdbd;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.7rem;
+  padding: 14px 44px;
+  border: none;
+  border-radius: 32px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.15s ease;
+  user-select: none;
+  z-index: 10;
+}
+
+.btnNewRule:hover {
+  background-color:  #bdbdbd;
+  transform: translateX(-50%) scale(1.05);
+}

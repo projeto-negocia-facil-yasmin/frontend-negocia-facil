@@ -2,7 +2,7 @@ import AdvertisementForm from "../../components/AdvertisementForm/AdvertisementF
 import { AdvertisementAPI } from "../../services/AdvertisementAPI";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import './AdvertisementFormPage.css';
+import styles from "./AdvertisementFormPage.module.css";
 
 export function AdvertisementFormPage() {
   const { id } = useParams();
@@ -25,7 +25,7 @@ export function AdvertisementFormPage() {
       const data = await AdvertisementAPI.getById(id);
       setAdvertisement(data);
     } catch (error) {
-      alert("Erro ao carregar anúncio.");
+      toast.error("Erro ao carregar anúncio.");
       console.error(error);
     }
   }
@@ -34,22 +34,19 @@ export function AdvertisementFormPage() {
     try {
       if (id) {
         await AdvertisementAPI.update(id, newAdvertisement);
-        alert("Anúncio atualizado com sucesso!");
       } else {
         await AdvertisementAPI.create(newAdvertisement);
-        alert("Anúncio criado com sucesso!");
       }
       navigate("..", { replace: true });
     } catch (error) {
-      alert("Erro ao salvar anúncio.");
+      toast.error("Erro ao salvar anúncio.");
       console.error(error.message);
     }
   }
 
   return (
-    <div className="advertisements-page-container">
-      <div className="advertisement-edition">
-        <h1>Formulário de Anúncio</h1>
+    <div className={styles.advertisementsPageContainer}>
+      <div className={styles.advertisementEdition}>
         <AdvertisementForm
           advertisement={advertisement}
           onUpdate={handleUpdate}

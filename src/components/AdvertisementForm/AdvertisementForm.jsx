@@ -3,33 +3,37 @@ import ProductList from "../ProductList/ProductList";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ProductSelection } from "../ProductSelection/ProductSelection";
-import "./AdvertisementForm.css";
+import styles from "./AdvertisementForm.module.css";
+import toast from "react-hot-toast";
 
 export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
   const navigate = useNavigate();
   const datetime = new Date(advertisement.createdAt);
 
   const [products, setProducts] = useState(advertisement.products || []);
-  const [description, setDescription] = useState(advertisement.description || "");
 
   useEffect(() => {
     setProducts(advertisement.products || []);
-    setDescription(advertisement.description || "");
   }, [advertisement]);
 
   async function updateAdvertisement(event) {
     event.preventDefault();
     if (products.length === 0) {
-      alert("Adicione pelo menos um produto ao anúncio antes de salvar.");
+      toast.error("Adicione pelo menos um produto ao anúncio antes de salvar.");
       return;
     }
     const userId = products[0]?.userId;
-    
-    advertisement.description = description;
+
     advertisement.products = products;
     advertisement.advertiser = { id: userId };
 
-    await onUpdate(advertisement.id, advertisement);
+    try {
+      await onUpdate(advertisement.id, advertisement);
+      toast.success(isNew ? "Anúncio criado com sucesso!" : "Anúncio atualizado com sucesso!");
+    } catch (err) {
+      toast.error("Erro ao salvar anúncio.");
+      console.error(err);
+    }
   }
 
   const removeProduct = (productId) => {
@@ -37,12 +41,12 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
   };
 
   return (
-    <div className="advertisement-form">
+    <div className={styles.advertisementForm}>
       {!isNew && (
-        <div>
+        <div className={styles.infoSection}>
           <p>ID: {advertisement.id}</p>
-          <p>{datetime.toLocaleDateString("pt-BR")}</p>
           <p>
+            {datetime.toLocaleDateString("pt-BR")} -{" "}
             {datetime.toLocaleTimeString("pt-BR", {
               hour: "2-digit",
               minute: "2-digit",
@@ -51,22 +55,23 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
         </div>
       )}
 
-      <p>Quantidade de itens no anúncio: {products.length}</p>
+      <p>
+        Quantidade de itens no anúncio: <strong>{products.length}</strong>
+      </p>
 
-      <form className="form-description" onSubmit={updateAdvertisement}>
-        <label>Descrição:</label>
-        <textarea
-          name="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-
-        <Button type="submit" text="Salvar" />
+      <form onSubmit={updateAdvertisement}>
+        <div className={styles.buttonGroup}>
+          <Button
+            type="button"
+            text="Cancelar"
+            action={() => navigate("..", { replace: true })}
+          />
+          <Button type="submit" text="Salvar" />
+        </div>
       </form>
 
-      {products.length > 0 ? (
-        <div>
-          <h3>Produtos anunciados</h3>
+      <div className={styles.productSection}>
+        {products.length > 0 ? (
           <ProductList
             products={products}
             onDelete={removeProduct}
@@ -74,17 +79,15 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
             showTrashButton={true}
             showCheckBox={false}
           />
-        </div>
-      ) : (
-        <p>Nenhum produto anunciado.</p>
-      )}
+        ) : (
+          <p>Nenhum produto anunciado.</p>
+        )}
+      </div>
 
-      <ProductSelection selectedProducts={products} onSelect={setProducts} />
-      <Button
-        type="button"
-        text="Cancelar"
-        action={() => navigate("..", { replace: true })}
-      />
+      <div className={styles.productSelection}>
+        <h3>Adicionar Produtos</h3>
+        <ProductSelection selectedProducts={products} onSelect={setProducts} />
+      </div>
     </div>
   );
 }

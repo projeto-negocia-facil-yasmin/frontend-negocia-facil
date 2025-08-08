@@ -1,26 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./ProductForm.module.css";
-import { ProductAPI } from "../../services/ProductAPI";
-import { toast } from "react-toastify";
+import { CategoryAPI } from "../../services/CategoryAPI";
 
 function ProductForm({ productToEdit, onCancel, onSave }) {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
-  const [category, setCategory] = useState("");
+  const [categoryId, setCategoryId] = useState("");
   const [type, setType] = useState("Venda");
   const [description, setDescription] = useState("");
-  const [file, setFile] = useState(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    CategoryAPI.getAll()
+      .then((data) => setCategories(data))
+      .catch(() => alert("Erro ao carregar categorias"));
+  }, []);
 
   useEffect(() => {
     if (productToEdit) {
-      setTitle(productToEdit.title);
-      setPrice(productToEdit.price);
-      setQuantity(productToEdit.quantity);
-      setCategory(productToEdit.category);
+      setTitle(productToEdit.title || "");
+      setPrice(productToEdit.price || "");
+      setQuantity(productToEdit.quantity || "");
+      setCategoryId(productToEdit.category?.id || "");
       setType(productToEdit.forExchange ? "Troca" : "Venda");
-      setDescription(productToEdit.description);
-      setFile(null);
+      setDescription(productToEdit.description || "");
+      setImagePreviewUrl(productToEdit.imageUrl || "");
     } else {
       clearForm();
     }
@@ -30,10 +37,11 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
     setTitle("");
     setPrice("");
     setQuantity("");
-    setCategory("");
+    setCategoryId("");
     setType("Venda");
     setDescription("");
-    setFile(null);
+    setImagePreviewUrl("");
+    setIsUploading(false);
   }
 
   function handleCancel() {
@@ -41,51 +49,70 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
     onCancel();
   }
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+  async function handleImageUpload(file) {
+    setIsUploading(true);
+    const cloudName = "dxnmdkbnd";
+    const uploadPreset = "negocia_facil";
 
-    if (!title || !price || !quantity || !category) {
-      toast.dismiss();
-      toast.warn("Preencha todos os campos obrigatórios.");
-      return;
-    }
-
-    const payload = {
-      title,
-      price: Number(price),
-      quantity: Number(quantity),
-      category,
-      description,
-      forExchange: type === "Troca",
-    };
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", uploadPreset);
 
     try {
-      toast.dismiss();
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+        method: "POST",
+        body: formData,
+      });
 
-      let savedProduct;
-      if (productToEdit && productToEdit.id) {
-        savedProduct = await ProductAPI.update(productToEdit.id, payload);
-        toast.success("Produto atualizado com sucesso!");
+      const data = await res.json();
+
+      if (res.ok) {
+        setImagePreviewUrl(data.secure_url);
       } else {
-        savedProduct = await ProductAPI.create(payload);
-        toast.success("Produto cadastrado com sucesso!");
+        throw new Error("Erro ao enviar imagem.");
       }
-
-      clearForm();
-      onSave(savedProduct);
     } catch (error) {
-      toast.dismiss();
-      toast.error(error.message);
+      console.error(error);
+      alert("Erro ao enviar imagem.");
+    } finally {
+      setIsUploading(false);
     }
   }
 
   function handleFileChange(e) {
-    setFile(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file) {
+      handleImageUpload(file);
+    }
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    if (!title || !price || !quantity || !categoryId) {
+      alert("Preencha todos os campos obrigatórios.");
+      return;
+    }
+
+    const payload = {
+      id: productToEdit?.id,
+      title,
+      price: Number(price),
+      quantity: Number(quantity),
+      categoryId: Number(categoryId),
+      description,
+      forExchange: type === "Troca",
+      imageUrl: imagePreviewUrl,
+    };
+
+    onSave(payload);
   }
 
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={handleSubmit}>
+        <h1 className={styles.title}>{productToEdit ? "Editar Produto" : "Cadastro de Produto"}</h1>
+
         <input
           type="text"
           placeholder="Título do Produto"
@@ -114,18 +141,13 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
         </div>
 
         <div className={styles.inlineGroup}>
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            required
-          >
-            <option value="">Categoria</option>
-            <option value="BOOK">Livro</option>
-            <option value="UNIFORM">Uniforme</option>
-            <option value="PERIPHERAL">Periférico</option>
-            <option value="BACKPACK">Mochila</option>
-            <option value="CALCULATOR">Calculadora</option>
-            <option value="OTHERS">Outros</option>
+          <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} required>
+            <option value="">Selecione uma categoria</option>
+            {categories.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
           </select>
 
           <select value={type} onChange={(e) => setType(e.target.value)}>
@@ -135,6 +157,8 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
         </div>
 
         <input type="file" onChange={handleFileChange} />
+
+        {imagePreviewUrl && <img src={imagePreviewUrl} alt="Preview" className={styles.imagePreview} />}
 
         <textarea
           placeholder="Descrição"
@@ -147,8 +171,8 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
           <button type="button" className={styles.cancel} onClick={handleCancel}>
             Cancelar
           </button>
-          <button type="submit" className={styles.save}>
-            Salvar
+          <button type="submit" className={styles.save} disabled={isUploading}>
+            {isUploading ? "Enviando imagem..." : "Salvar"}
           </button>
         </div>
       </form>

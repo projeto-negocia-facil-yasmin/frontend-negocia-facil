@@ -1,51 +1,82 @@
-import './SimpleAdvertisementCard.css';
+import styles from "./SimpleAdvertisementCard.module.css";
 import { MoreVertical } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import ProductCard from "../ProductCard/ProductCard";
 
 function SimpleAdvertisementCard({
-    id,
-    creationTime,
-    itemsCount,
-    description,
-    onEdit,
-    onDelete
-  }) {
-
+  id,            
+  creationTime,
+  products,
+  onEdit,
+  onDelete,
+  isOwner = false,
+}) {
   const [showMenu, setShowMenu] = useState(false);
+  const navigate = useNavigate();
 
   return (
-    <>
-      <div className='user-advertisement-card'>
-          <div>
-              <div className='card-header'>
-                  <div className="advertisement-dropdown"
-                    onMouseEnter={() => setShowMenu(true)}
-                    onMouseLeave={() => setShowMenu(false)}
-                  >
-                      <MoreVertical />
-                      {showMenu && (
-                        <div>
-                          <button onClick={onEdit}>
-                            Editar
-                          </button>
-                          <button onClick={() => onDelete(id)}>
-                            Excluir
-                          </button>
-                        </div>
-                      )}
-                  </div>
-                  <h2>Anúncio {id}</h2>
-                  <p>Criado em {creationTime}</p>
-              </div>
-              <div className='card_subinfo'>
-                  <p>Quantidade de itens no anúncio: {itemsCount}</p>
-              </div>
-          </div>
-        <p>Descrição: {description}</p>
+    <div className={styles.userAdvertisementCard}>
+      {isOwner && (
+        <div className={styles.cardHeader}>
+          <button
+            className={styles.advertisementDropdown}
+            onClick={() => setShowMenu((prev) => !prev)}
+            aria-label="Abrir menu de opções"
+          >
+            <MoreVertical />
+          </button>
+
+          {showMenu && (
+            <div className={styles.dropdownMenu}>
+              {onEdit && (
+                <button className={styles.dropdownMenuButton} onClick={onEdit}>
+                  Editar
+                </button>
+              )}
+              {onDelete && (
+                <button
+                  className={styles.dropdownMenuButton}
+                  onClick={() => onDelete(id)}
+                >
+                  Excluir
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      <div className={styles.productsContainer}>
+        {products.length > 0 ? (
+          products.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              showTrashButton={false}
+              showCheckBox={false}
+            />
+          ))
+        ) : (
+          <p className={styles.noProductsText}>Nenhum produto nesse anúncio.</p>
+        )}
       </div>
-      <div>
-      </div>
-    </>
+
+      <p className={styles.creationTime}>
+        Criado em <time dateTime={creationTime}>{creationTime}</time>
+      </p>
+
+      {!isOwner && (
+        <div className={styles.contactButtonWrapper}>
+          <button
+            className={styles.contactButton}
+            onClick={() => navigate(`/contact/${id}`)}
+          >
+            Contatar Anunciante
+          </button>
+        </div>
+      )}
+    </div>
   );
 }
 

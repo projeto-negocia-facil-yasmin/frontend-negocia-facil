@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-hot-toast";
 import ProductControls from "../../components/ProductsControls/ProductControls";
 import ProductForm from "../../components/ProductForm/ProductForm";
 import ProductList from "../../components/ProductList/ProductList";
@@ -20,7 +18,6 @@ function ProductsPage() {
   async function loadProducts() {
     try {
       const data = await ProductAPI.getAll();
-      console.log("raw products payload:", data);
 
       let resolved = [];
       if (Array.isArray(data)) {
@@ -37,32 +34,23 @@ function ProductsPage() {
     }
   }
 
-  const handleCreate = async (product) => {
+  const handleSave = async (product) => {
     try {
-      const newProduct = await ProductAPI.create(product);
-      setProducts((prev) => [...prev, newProduct]);
+      let savedProduct;
+      if (product.id) {
+        savedProduct = await ProductAPI.update(product.id, product);
+        setProducts((prev) =>
+          prev.map((p) => (p.id === savedProduct.id ? savedProduct : p))
+        );
+        toast.success("Produto atualizado com sucesso!");
+      } else {
+        savedProduct = await ProductAPI.create(product);
+        setProducts((prev) => [...prev, savedProduct]);
+        toast.success("Produto criado com sucesso!");
+      }
       setShowForm(false);
       setEditingProduct(null);
-      toast.dismiss();
-      toast.success("Produto criado com sucesso!");
     } catch (error) {
-      toast.dismiss();
-      toast.error(error.message);
-    }
-  };
-
-  const handleUpdate = async (product) => {
-    try {
-      const updatedProduct = await ProductAPI.update(product.id, product);
-      setProducts((prev) =>
-        prev.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
-      );
-      setShowForm(false);
-      setEditingProduct(null);
-      toast.dismiss();
-      toast.success("Produto atualizado com sucesso!");
-    } catch (error) {
-      toast.dismiss();
       toast.error(error.message);
     }
   };
@@ -74,16 +62,21 @@ function ProductsPage() {
     try {
       await ProductAPI.delete(id);
       setProducts((prev) => prev.filter((p) => p.id !== id));
-      toast.dismiss();
       toast.success("Produto removido com sucesso!");
     } catch (error) {
-      toast.dismiss();
       toast.error(error.message);
     }
   };
 
   const handleEdit = (product) => {
-    setEditingProduct(product);
+    const productForEdit = {
+      ...product,
+      category: product.category
+        ? (typeof product.category === "object" ? product.category : { id: product.category })
+        : null,
+    };
+
+    setEditingProduct(productForEdit);
     setShowForm(true);
   };
 
@@ -94,8 +87,8 @@ function ProductsPage() {
 
   const filtered = Array.isArray(products)
     ? products.filter((p) =>
-        (p.title || "").toLowerCase().includes(search.toLowerCase())
-      )
+      (p.title || "").toLowerCase().includes(search.toLowerCase())
+    )
     : [];
 
   return (
@@ -121,24 +114,10 @@ function ProductsPage() {
       ) : (
         <ProductForm
           productToEdit={editingProduct}
-          onSave={async (saved) => {
-            await loadProducts();
-            setShowForm(false);
-            setEditingProduct(null);
-          }}
+          onSave={handleSave}
           onCancel={handleCancel}
         />
       )}
-
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        closeOnClick
-        pauseOnHover
-        draggable
-        limit={1}
-      />
     </div>
   );
 }
