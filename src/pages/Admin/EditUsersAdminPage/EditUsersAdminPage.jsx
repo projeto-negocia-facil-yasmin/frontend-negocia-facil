@@ -9,7 +9,7 @@ import { AuthContext } from "../../../context/AuthContext";
 function EditUsersAdminPage() {
   const [userData, setUserData] = useState(null);
   const { id } = useParams();
-  const { user, updateUserName } = useContext(AuthContext);
+  const { user, updateUserName, updateProfileImage } = useContext(AuthContext);
 
   useEffect(() => {
     async function fetchUser() {
@@ -21,7 +21,7 @@ function EditUsersAdminPage() {
         });
         setUserData(res.data);
       } catch (err) {
-        console.error("Erro ao buscar usuário:", err);
+        console.error(err);
         toast.error("Erro ao buscar usuário.", { id: "fetch-user-error" });
       }
     }
@@ -35,6 +35,7 @@ function EditUsersAdminPage() {
       fullName: data.fullName,
       enrollmentNumber: data.enrollmentNumber,
       phone: data.phone,
+      imgUrl: data.imgUrl
     };
 
     try {
@@ -48,9 +49,11 @@ function EditUsersAdminPage() {
 
       if (user?.id === data.id) {
         updateUserName(data.fullName);
+        updateProfileImage(data.imgUrl);
       }
+
     } catch (error) {
-      console.error("Erro ao editar usuário:", error.response?.data || error.message || error);
+      console.error(error.response?.data || error.message || error);
       toast.error("Erro ao editar o usuário.", { id: "edit-user-error" });
     }
   }

@@ -117,7 +117,10 @@ export default function Register() {
           type="text"
           placeholder="Telefone (11 dígitos, somente números)"
           value={phone}
-          onChange={(e) => setPhone(e.target.value)}
+          onChange={(e) => {
+            const onlyNumbers = e.target.value.replace(/\D/g, '');
+            setPhone(onlyNumbers.slice(0, 11));
+          }}
           className={styles.input}
           required
           pattern="^\d{11}$"
