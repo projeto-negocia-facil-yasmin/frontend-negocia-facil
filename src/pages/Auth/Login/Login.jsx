@@ -1,12 +1,13 @@
 import styles from "./Login.module.css";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Button from "../../../components/Button/Button.jsx";
+import { AuthContext } from "../../../context/AuthContext";
 
 export default function Login() {
   const navigate = useNavigate();
-
+  const { login } = useContext(AuthContext); 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -22,14 +23,11 @@ export default function Login() {
       const token = response.data.accessToken;
       const roles = response.data.roles ?? [];
 
-      localStorage.setItem("token", token);
-      localStorage.setItem("roles", JSON.stringify(roles));
-
       const userResponse = await axios.get("http://localhost:8080/api/v1/users/me", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      localStorage.setItem("user", JSON.stringify(userResponse.data));
+      login(token, roles, userResponse.data);
 
       if (roles.includes("ADMIN")) {
         navigate("/admin/");

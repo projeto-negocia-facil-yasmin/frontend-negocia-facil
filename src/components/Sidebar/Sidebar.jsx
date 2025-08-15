@@ -1,11 +1,13 @@
+import { useContext } from "react";
+import { NavLink } from "react-router-dom";
 import { Home, Package, Tag, Shield, LogOut, Users } from "lucide-react";
 import SidebarHeader from "./SidebarHeader/SidebarHeader";
 import styles from './Sidebar.module.css';
-import { NavLink } from "react-router-dom";
-import { isAdmin } from "../../utils/auth";
+import { AuthContext } from "../../context/AuthContext.jsx";
 
-function Sidebar({ userName, imgUrl }) {
-  const admin = isAdmin();
+function Sidebar({ imgUrl }) {
+  const { roles, userName } = useContext(AuthContext);
+  const admin = roles.includes("ADMIN");
   const basePath = admin ? "/admin" : "/user";
 
   const menuItems = [

@@ -1,12 +1,14 @@
 import styles from "./Register.module.css";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Button from "../../../components/Button/Button.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { AuthContext } from "../../../context/AuthContext";
 
 export default function Register() {
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -19,13 +21,7 @@ export default function Register() {
     e.preventDefault();
     setLoading(true);
 
-    const userData = {
-      username,
-      password,
-      fullName,
-      enrollmentNumber,
-      phone,
-    };
+    const userData = { username, password, fullName, enrollmentNumber, phone };
 
     try {
       const registerRes = await axios.post("http://localhost:8080/auth/register", userData);
@@ -37,7 +33,13 @@ export default function Register() {
         });
 
         const token = loginRes.data.accessToken;
-        localStorage.setItem("token", token);
+        const roles = loginRes.data.roles ?? [];
+
+        const userResponse = await axios.get("http://localhost:8080/api/v1/users/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        login(token, roles, userResponse.data);
 
         toast.success("Cadastro realizado com sucesso!", { id: "register-success" });
 

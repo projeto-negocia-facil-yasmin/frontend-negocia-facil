@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import EditUserForm from "../../../components/EditUserForm/EditUserForm.jsx";
 import styles from "./EditUsersAdminPage.module.css";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import { AuthContext } from "../../../context/AuthContext";
 
 function EditUsersAdminPage() {
   const [userData, setUserData] = useState(null);
   const { id } = useParams();
+  const { user, updateUserName } = useContext(AuthContext);
 
   useEffect(() => {
     async function fetchUser() {
@@ -41,7 +43,12 @@ function EditUsersAdminPage() {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
+
       toast.success("Usuário editado com sucesso!", { id: "edit-user-success" });
+
+      if (user?.id === data.id) {
+        updateUserName(data.fullName);
+      }
     } catch (error) {
       console.error("Erro ao editar usuário:", error.response?.data || error.message || error);
       toast.error("Erro ao editar o usuário.", { id: "edit-user-error" });
@@ -53,7 +60,11 @@ function EditUsersAdminPage() {
       <div className={styles.formHeader}>
         <h2>Formulário de edição</h2>
       </div>
-      {userData ? <EditUserForm user={userData} action={handleEditUser} /> : <p>Carregando...</p>}
+      {userData ? (
+        <EditUserForm user={userData} action={handleEditUser} />
+      ) : (
+        <p>Carregando...</p>
+      )}
     </div>
   );
 }
