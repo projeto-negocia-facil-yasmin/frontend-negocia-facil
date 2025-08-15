@@ -7,12 +7,15 @@ import { AuthContext } from "../../../context/AuthContext";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext); 
+  const { login } = useContext(AuthContext);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     try {
       const response = await axios.post("http://localhost:8080/auth/login", {
@@ -27,16 +30,20 @@ export default function Login() {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      login(token, roles, userResponse.data);
+      const userWithImage = {
+        ...userResponse.data,
+        profileImage: userResponse.data.imgUrl || "https://api.dicebear.com/9.x/bottts-neutral/svg?seed=Riley",
+      };
 
-      if (roles.includes("ADMIN")) {
-        navigate("/admin/");
-      } else {
-        navigate("/user/");
-      }
+      login(token, roles, userWithImage);
+
+      if (roles.includes("ADMIN")) navigate("/admin");
+      else navigate("/user/products");
     } catch (err) {
       console.error("Erro ao fazer login:", err);
       alert("Usuário ou senha inválidos.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -44,6 +51,7 @@ export default function Login() {
     <div className={styles.container}>
       <form onSubmit={handleLogin} className={styles.form}>
         <h2 className={styles.title}>Bem-vindo de Volta! Acesse sua conta</h2>
+
         <input
           type="email"
           placeholder="Email institucional"
@@ -52,6 +60,7 @@ export default function Login() {
           className={styles.input}
           required
         />
+
         <input
           type="password"
           placeholder="Senha"
@@ -60,7 +69,9 @@ export default function Login() {
           className={styles.input}
           required
         />
-        <Button type="submit" text="Entrar" />
+
+        <Button type="submit" text={loading ? "Entrando..." : "Entrar"} disabled={loading} />
+
         <Link to="/auth/register" className={styles.link}>
           Ainda não tem uma conta? Cadastre-se aqui
         </Link>

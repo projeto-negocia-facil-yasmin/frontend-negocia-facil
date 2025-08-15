@@ -5,8 +5,8 @@ import SidebarHeader from "./SidebarHeader/SidebarHeader";
 import styles from './Sidebar.module.css';
 import { AuthContext } from "../../context/AuthContext.jsx";
 
-function Sidebar({ imgUrl }) {
-  const { roles, userName } = useContext(AuthContext);
+function Sidebar() {
+  const { roles } = useContext(AuthContext);
   const admin = roles.includes("ADMIN");
   const basePath = admin ? "/admin" : "/user";
 
@@ -22,7 +22,7 @@ function Sidebar({ imgUrl }) {
 
   return (
     <aside className={styles.aside}>
-      <SidebarHeader imgUrl={imgUrl} userName={userName} />
+      <SidebarHeader />
       <nav className={styles.nav}>
         {menuItems.map((item, index) => (
           <NavLink className={styles.link} key={index} to={item.path}>

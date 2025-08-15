@@ -3,21 +3,33 @@ import { createContext, useState } from "react";
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(localStorage.getItem("token") || "");
-  const [roles, setRoles] = useState(JSON.parse(localStorage.getItem("roles") || "[]"));
-  const [userName, setUserName] = useState(localStorage.getItem("userName") || "Usuário");
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user") || "null"));
+  const storedUser = JSON.parse(localStorage.getItem("user") || "null");
+  const storedRoles = JSON.parse(localStorage.getItem("roles") || "[]");
+  const storedToken = localStorage.getItem("token") || "";
+  const storedUserName = localStorage.getItem("userName") || "Usuário";
+
+  const [token, setToken] = useState(storedToken);
+  const [roles, setRoles] = useState(storedRoles);
+  const [userName, setUserName] = useState(storedUserName);
+  const [user, setUser] = useState(storedUser);
 
   const login = (tokenValue, rolesValue, userData) => {
+    const userWithFallback = {
+      ...userData,
+      profileImage:
+        userData.profileImage ||
+        "https://api.dicebear.com/9.x/bottts-neutral/svg?seed=Riley",
+    };
+
     setToken(tokenValue);
     setRoles(rolesValue);
-    setUserName(userData.fullName);
-    setUser(userData);
+    setUser(userWithFallback);
+    setUserName(userWithFallback.fullName || "Usuário");
 
     localStorage.setItem("token", tokenValue);
     localStorage.setItem("roles", JSON.stringify(rolesValue));
-    localStorage.setItem("userName", userData.fullName);
-    localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("user", JSON.stringify(userWithFallback));
+    localStorage.setItem("userName", userWithFallback.fullName || "Usuário");
   };
 
   const updateUserName = (newName) => {
@@ -30,6 +42,14 @@ export function AuthProvider({ children }) {
     localStorage.setItem("userName", newName);
   };
 
+  const updateProfileImage = (newImage) => {
+    setUser((prev) => {
+      const updatedUser = { ...prev, profileImage: newImage };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      return updatedUser;
+    });
+  };
+
   const logout = () => {
     setToken("");
     setRoles([]);
@@ -40,7 +60,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ token, roles, userName, user, login, updateUserName, logout }}
+      value={{ token, roles, userName, user, login, updateUserName, updateProfileImage, logout }}
     >
       {children}
     </AuthContext.Provider>

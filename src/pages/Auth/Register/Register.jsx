@@ -1,9 +1,10 @@
 import styles from "./Register.module.css";
 import { useState, useContext } from "react";
-import Button from "../../../components/Button/Button.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Button from "../../../components/Button/Button.jsx";
+import CloudinaryImageUpload from "../../../components/ImageUpload/CloudinaryImageUpload.jsx";
 import { AuthContext } from "../../../context/AuthContext";
 
 export default function Register() {
@@ -15,22 +16,27 @@ export default function Register() {
   const [fullName, setFullName] = useState("");
   const [enrollmentNumber, setEnrollmentNumber] = useState("");
   const [phone, setPhone] = useState("");
+  const [profileImage, setProfileImage] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    const userData = { username, password, fullName, enrollmentNumber, phone };
+    const userData = {
+      username,
+      password,
+      fullName,
+      enrollmentNumber,
+      phone,
+      imgUrl: profileImage,
+    };
 
     try {
       const registerRes = await axios.post("http://localhost:8080/auth/register", userData);
 
       if (registerRes.status === 201 || registerRes.status === 200) {
-        const loginRes = await axios.post("http://localhost:8080/auth/login", {
-          username,
-          password,
-        });
+        const loginRes = await axios.post("http://localhost:8080/auth/login", { username, password });
 
         const token = loginRes.data.accessToken;
         const roles = loginRes.data.roles ?? [];
@@ -39,25 +45,23 @@ export default function Register() {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        login(token, roles, userResponse.data);
+        const userWithImage = {
+          ...userResponse.data,
+          profileImage: userResponse.data.imgUrl || "https://api.dicebear.com/9.x/bottts-neutral/svg?seed=Riley",
+        };
+
+        login(token, roles, userWithImage);
 
         toast.success("Cadastro realizado com sucesso!", { id: "register-success" });
 
-        if (username.toLowerCase().endsWith("@ifpb.edu.br")) {
-          navigate("/admin");
-        } else {
-          navigate("/user/products");
-        }
+        if (username.toLowerCase().endsWith("@ifpb.edu.br")) navigate("/admin");
+        else navigate("/user/products");
       } else {
         toast.error("Falha inesperada no cadastro.", { id: "register-failure" });
       }
     } catch (err) {
       console.error("Erro ao cadastrar:", err);
-      const msg =
-        err.response?.data?.message ||
-        err.response?.data ||
-        err.message ||
-        "Erro ao cadastrar";
+      const msg = err.response?.data?.message || err.response?.data || err.message || "Erro ao cadastrar";
       toast.error(msg, { id: "register-error" });
     } finally {
       setLoading(false);
@@ -78,7 +82,6 @@ export default function Register() {
           required
           pattern="^[a-zA-Z0-9._%+\-]+@(ifpb\.edu\.br|academico\.ifpb\.edu\.br)$"
           title="O email deve terminar com @ifpb.edu.br ou @academico.ifpb.edu.br"
-          aria-label="email institucional"
         />
 
         <input
@@ -90,7 +93,6 @@ export default function Register() {
           required
           minLength={8}
           maxLength={30}
-          aria-label="senha"
         />
 
         <input
@@ -100,7 +102,6 @@ export default function Register() {
           onChange={(e) => setFullName(e.target.value)}
           className={styles.input}
           required
-          aria-label="nome completo"
         />
 
         <input
@@ -110,7 +111,6 @@ export default function Register() {
           onChange={(e) => setEnrollmentNumber(e.target.value)}
           className={styles.input}
           required
-          aria-label="matrícula"
         />
 
         <input
@@ -122,8 +122,9 @@ export default function Register() {
           required
           pattern="^\d{11}$"
           title="O telefone deve conter exatamente 11 dígitos numéricos, sem espaços ou símbolos"
-          aria-label="telefone"
         />
+
+        <CloudinaryImageUpload onUploadSuccess={setProfileImage} />
 
         <Button type="submit" text={loading ? "Cadastrando..." : "Cadastrar"} disabled={loading} />
         <Link to="/auth/login" className={styles.link}>
