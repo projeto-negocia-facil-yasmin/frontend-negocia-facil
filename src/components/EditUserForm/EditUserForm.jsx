@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import CloudinaryImageUpload from "../ImageUpload/CloudinaryImageUpload";
 import { AuthContext } from "../../context/AuthContext";
 
-export default function EditUserForm({ user, action }) {
+export default function EditUserForm({ user, action, cancelPath }) {
   const navigate = useNavigate();
   const { user: loggedUser, updateProfileImage } = useContext(AuthContext);
 
@@ -35,10 +35,11 @@ export default function EditUserForm({ user, action }) {
     setFormState(prev => ({ ...prev, [name]: value }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const data = { ...formState, id: user.id };
-    action(data);
+    await action(data);
+
     if (loggedUser?.id === user.id && formState.imgUrl) {
       updateProfileImage(formState.imgUrl);
     }
@@ -94,7 +95,7 @@ export default function EditUserForm({ user, action }) {
           initialImage={formState.imgUrl}
         />
         <Button text="Salvar Alterações" type="submit" />
-        <Button text="Cancelar" action={() => navigate("/admin/users")} />
+        <Button text="Cancelar" action={() => navigate(cancelPath || "/user/products")} />
       </form>
     </ErrorBoundary>
   );

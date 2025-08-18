@@ -1,5 +1,4 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-
 import Login from "../pages/Auth/Login/Login.jsx";
 import Register from "../pages/Auth/Register/Register.jsx";
 import AdminHomePage from "../pages/Admin/AdminHomePage/AdminHomePage.jsx";
@@ -7,6 +6,7 @@ import EditUsersAdminPage from "../pages/Admin/EditUsersAdminPage/EditUsersAdmin
 import ListUsersAdminPage from "../pages/Admin/ListUsersAdminPage/ListUsersAdminPage.jsx";
 import CreateUsersAdminPage from "../pages/Admin/CreateUsersAdminPage/CreateUsersAdminPage.jsx";
 import UserHomePage from "../pages/User/UserHomePage/UserHomePage.jsx";
+import EditUserProfilePage from "../pages/User/EditUserProfilePage/EditUserProfilePage.jsx"; // <- nova página
 import ProductsPage from "../pages/ProductsPage/ProductsPage.jsx";
 import AdvertisementsPage from "../pages/AdvertisementsPage/AdvertisementsPage.jsx";
 import { AdvertisementFormPage } from "../pages/AdvertisementFormPage/AdvertisementFormPage.jsx";
@@ -34,15 +34,12 @@ export default function AppRoutes() {
           <Route path=":id" element={<EditUsersAdminPage />} />
           <Route path="register" element={<CreateUsersAdminPage />} />
         </Route>
-
         <Route path="products" element={<ProductsPage />} />
-
         <Route path="advertisements">
           <Route index element={<AdvertisementsPage />} />
           <Route path="new" element={<AdvertisementFormPage />} />
           <Route path=":id" element={<AdvertisementFormPage />} />
         </Route>
-
         <Route path="rules">
           <Route index element={<RulesList />} />
           <Route path="new" element={<RuleForm />} />
@@ -52,18 +49,18 @@ export default function AppRoutes() {
 
       <Route path="user" element={<UserHomePage />}>
         <Route path="products" element={<ProductsPage />} />
-
         <Route path="advertisements">
           <Route index element={<AdvertisementsPage />} />
           <Route path="new" element={<AdvertisementFormPage />} />
           <Route path=":id" element={<AdvertisementFormPage />} />
         </Route>
-
         <Route path="rules">
           <Route index element={<RulesList />} />
           <Route path="new" element={<RuleForm />} />
           <Route path="edit" element={<RuleForm />} />
         </Route>
+      
+        <Route path="edit-profile" element={<EditUserProfilePage />} />
       </Route>
 
       <Route path="home" element={<Home />} />
