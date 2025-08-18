@@ -18,8 +18,9 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
     setProducts(advertisement.products || []);
   }, [advertisement]);
 
-  async function updateAdvertisement(event) {
+  async function saveAdvertisement(event) {
     event.preventDefault();
+
     if (products.length === 0) {
       toast.error("Adicione pelo menos um produto ao anúncio antes de salvar.");
       return;
@@ -31,6 +32,7 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
 
     try {
       setLoading(true);
+
       if (isNew) {
         await AdvertisementAPI.create(advertisement);
         toast.success("Anúncio criado com sucesso!");
@@ -38,10 +40,10 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
         await AdvertisementAPI.update(advertisement.id, advertisement);
         toast.success("Anúncio atualizado com sucesso!");
       }
+
       navigate("..", { replace: true });
     } catch (err) {
       toast.error(err.message);
-      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -70,7 +72,7 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
         Quantidade de itens no anúncio: <strong>{products.length}</strong>
       </p>
 
-      <form onSubmit={updateAdvertisement}>
+      <form onSubmit={saveAdvertisement}>
         <div className={styles.buttonGroup}>
           <Button
             type="button"

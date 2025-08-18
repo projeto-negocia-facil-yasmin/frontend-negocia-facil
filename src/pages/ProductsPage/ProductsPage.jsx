@@ -52,20 +52,32 @@ function ProductsPage() {
       setShowForm(false);
       setEditingProduct(null);
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message || "Erro ao salvar o produto");
     }
   };
 
   const handleDelete = async (id) => {
-    const confirm = window.confirm("Deseja excluir este produto?");
-    if (!confirm) return;
+    const confirmDelete = window.confirm("Deseja excluir este produto?");
+    if (!confirmDelete) return;
 
     try {
       await ProductAPI.delete(id);
       setProducts((prev) => prev.filter((p) => p.id !== id));
       toast.success("Produto removido com sucesso!");
     } catch (error) {
-      toast.error(error.message);
+      if (error.response) {
+        const status = error.response.status;
+
+        if (status === 403) {
+          toast.error("Você não tem permissão para deletar este produto.");
+        } else if (status === 409) {
+          toast.error(error.message);
+        } else {
+          toast.error(error.message);
+        }
+      } else {
+        toast.error(error.message);
+      }
     }
   };
 
