@@ -17,7 +17,6 @@ export default function ContactAdvertiserPage() {
         setAdvertiser(data);
       } catch (err) {
         toast.error(err.message || "Erro ao buscar anunciante.");
-        console.error("Erro ao buscar anunciante:", err);
       } finally {
         setLoading(false);
       }

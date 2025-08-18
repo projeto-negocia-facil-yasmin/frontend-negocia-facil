@@ -27,7 +27,6 @@ function SimpleAdvertisementCard({
       onDelete(id);
     } catch (err) {
       toast.error(err.message);
-      console.error(err);
     } finally {
       setLoading(false);
     }

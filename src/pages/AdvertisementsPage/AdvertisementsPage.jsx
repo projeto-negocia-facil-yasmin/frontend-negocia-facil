@@ -28,7 +28,6 @@ function AdvertisementsPage() {
       setAllAdvertisements(data);
     } catch (err) {
       toast.error(err.message);
-      console.error(err);
     }
   }
 
@@ -38,7 +37,6 @@ function AdvertisementsPage() {
       setCategories(data);
     } catch (err) {
       toast.error(err.message);
-      console.error(err);
     }
   }
 

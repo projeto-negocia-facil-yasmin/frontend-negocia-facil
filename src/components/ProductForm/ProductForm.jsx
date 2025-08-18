@@ -14,9 +14,17 @@ function ProductForm({ productToEdit, onCancel, onSave }) {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    CategoryAPI.getAll()
-      .then((data) => setCategories(data))
-      .catch(() => alert("Erro ao carregar categorias"));
+    const loadCategories = async () => {
+      try {
+        const data = await CategoryAPI.getAll();
+        setCategories(Array.isArray(data) ? data : []);
+      } catch (error) {
+        toast.error(error.message || "Erro ao carregar categorias");
+        setCategories([]);
+      }
+    };
+
+    loadCategories();
   }, []);
 
   useEffect(() => {

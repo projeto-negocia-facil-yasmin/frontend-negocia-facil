@@ -9,10 +9,6 @@ export const RuleAPI = {
     const response = await api.get("/rules");
     return response.data;
   },
-  getById: async (id) => {
-    const response = await api.get(`/rules/${id}`);
-    return response.data;
-  },
   update: async (id, data) => {
     const response = await api.put(`/rules/${id}`, data);
     return response.data;

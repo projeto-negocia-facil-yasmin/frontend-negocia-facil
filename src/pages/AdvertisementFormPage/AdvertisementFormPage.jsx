@@ -24,7 +24,6 @@ export function AdvertisementFormPage() {
       setAdvertisement(data);
     } catch (error) {
       toast.error(error.message);
-      console.error(error);
     }
   }
 
@@ -40,7 +39,6 @@ export function AdvertisementFormPage() {
       navigate("..", { replace: true });
     } catch (error) {
       toast.error(error.message);
-      console.error(error);
     }
   }
 
