@@ -2,12 +2,12 @@ import AdvertisementForm from "../../components/AdvertisementForm/AdvertisementF
 import { AdvertisementAPI } from "../../services/AdvertisementAPI";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import styles from "./AdvertisementFormPage.module.css";
 
 export function AdvertisementFormPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-
   const [advertisement, setAdvertisement] = useState({
     description: "",
     products: [],
@@ -15,9 +15,7 @@ export function AdvertisementFormPage() {
   });
 
   useEffect(() => {
-    if (id) {
-      loadAdvertisement();
-    }
+    if (id) loadAdvertisement();
   }, [id]);
 
   async function loadAdvertisement() {
@@ -25,7 +23,7 @@ export function AdvertisementFormPage() {
       const data = await AdvertisementAPI.getById(id);
       setAdvertisement(data);
     } catch (error) {
-      toast.error("Erro ao carregar anúncio.");
+      toast.error(error.message);
       console.error(error);
     }
   }
@@ -34,13 +32,15 @@ export function AdvertisementFormPage() {
     try {
       if (id) {
         await AdvertisementAPI.update(id, newAdvertisement);
+        toast.success("Anúncio atualizado com sucesso!");
       } else {
         await AdvertisementAPI.create(newAdvertisement);
+        toast.success("Anúncio criado com sucesso!");
       }
       navigate("..", { replace: true });
     } catch (error) {
-      toast.error("Erro ao salvar anúncio.");
-      console.error(error.message);
+      toast.error(error.message);
+      console.error(error);
     }
   }
 

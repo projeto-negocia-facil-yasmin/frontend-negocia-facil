@@ -5,12 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { ProductSelection } from "../ProductSelection/ProductSelection";
 import styles from "./AdvertisementForm.module.css";
 import toast from "react-hot-toast";
+import { AdvertisementAPI } from "../../services/AdvertisementAPI";
 
 export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
   const navigate = useNavigate();
   const datetime = new Date(advertisement.createdAt);
 
   const [products, setProducts] = useState(advertisement.products || []);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setProducts(advertisement.products || []);
@@ -22,17 +24,26 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
       toast.error("Adicione pelo menos um produto ao anúncio antes de salvar.");
       return;
     }
-    const userId = products[0]?.userId;
 
+    const userId = products[0]?.userId;
     advertisement.products = products;
     advertisement.advertiser = { id: userId };
 
     try {
-      await onUpdate(advertisement.id, advertisement);
-      toast.success(isNew ? "Anúncio criado com sucesso!" : "Anúncio atualizado com sucesso!");
+      setLoading(true);
+      if (isNew) {
+        await AdvertisementAPI.create(advertisement);
+        toast.success("Anúncio criado com sucesso!");
+      } else {
+        await AdvertisementAPI.update(advertisement.id, advertisement);
+        toast.success("Anúncio atualizado com sucesso!");
+      }
+      navigate("..", { replace: true });
     } catch (err) {
-      toast.error("Erro ao salvar anúncio.");
+      toast.error(err.message);
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -65,8 +76,9 @@ export default function AdvertisementForm({ advertisement, onUpdate, isNew }) {
             type="button"
             text="Cancelar"
             action={() => navigate("..", { replace: true })}
+            disabled={loading}
           />
-          <Button type="submit" text="Salvar" />
+          <Button type="submit" text="Salvar" disabled={loading} />
         </div>
       </form>
 
