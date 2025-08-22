@@ -1,15 +1,16 @@
 import styles from "./Login.module.css";
-import axios from "axios";
 import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import toast from "react-hot-toast";
 import Button from "../../../components/Button/Button.jsx";
 import { AuthContext } from "../../../context/AuthContext";
+import { UserAPI } from "../../../services/UserAPI";
 
 export default function Login() {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
-  const [email, setEmail] = useState("");
+  const [enrollmentNumber, setEnrollmentNumber] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -18,30 +19,27 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:8080/auth/login", {
-        username: email,
-        password: password,
+      const suapRes = await UserAPI.authenticateSuap({
+        enrollmentNumber,
+        password,
       });
 
-      const token = response.data.accessToken;
-      const roles = response.data.roles ?? [];
-
-      const userResponse = await axios.get("http://localhost:8080/api/v1/users/me", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      const userWithImage = {
-        ...userResponse.data,
-        profileImage: userResponse.data.imgUrl || "https://api.dicebear.com/9.x/bottts-neutral/svg?seed=Riley",
+      const token = suapRes.token;
+      const roles = suapRes.roles ?? [];
+      const user = {
+        ...suapRes.user,
+        profileImage: suapRes.user.imgUrl || "https://api.dicebear.com/9.x/bottts-neutral/svg?seed=Riley",
       };
 
-      login(token, roles, userWithImage);
+      login(token, roles, user);
+
+      toast.success("Login SUAP realizado com sucesso!");
 
       if (roles.includes("ADMIN")) navigate("/admin");
       else navigate("/user/products");
     } catch (err) {
-      console.error("Erro ao fazer login:", err);
-      alert("Usuário ou senha inválidos.");
+      console.error("Erro SUAP login:", err);
+      toast.error(err.response?.data || "Falha na autenticação SUAP");
     } finally {
       setLoading(false);
     }
@@ -50,20 +48,20 @@ export default function Login() {
   return (
     <div className={styles.container}>
       <form onSubmit={handleLogin} className={styles.form}>
-        <h2 className={styles.title}>Bem-vindo de Volta! Acesse sua conta</h2>
+        <h2 className={styles.title}>Bem-vindo de volta! Acesse sua conta</h2>
 
         <input
-          type="email"
-          placeholder="Email institucional"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="text"
+          placeholder="Matrícula SUAP"
+          value={enrollmentNumber}
+          onChange={(e) => setEnrollmentNumber(e.target.value)}
           className={styles.input}
           required
         />
 
         <input
           type="password"
-          placeholder="Senha"
+          placeholder="Senha SUAP"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className={styles.input}
