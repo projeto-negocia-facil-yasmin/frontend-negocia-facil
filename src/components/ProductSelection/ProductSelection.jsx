@@ -27,7 +27,6 @@ export function ProductSelection({ selectedProducts = [], onSelect }) {
         : [];
       setAllProducts(productsArray);
     } catch (e) {
-      console.error("Erro carregando produtos disponíveis", e);
       setAllProducts([]);
     }
   }

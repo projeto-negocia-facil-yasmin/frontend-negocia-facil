@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { RuleAPI } from "../../services/ruleAPI";
+import { RuleAPI } from "../../services/RuleAPI";
 import { isAdmin } from "../../utils/auth";
 import toast from "react-hot-toast";
 import styles from "./RuleForm.module.css";
@@ -54,7 +54,6 @@ export default function RuleForm() {
         error.message ||
         "Erro ao salvar regra.";
       toast.error(msg, { id: `${toastId}-error` });
-      console.error("Erro ao salvar regra:", error);
     } finally {
       setIsSaving(false);
     }

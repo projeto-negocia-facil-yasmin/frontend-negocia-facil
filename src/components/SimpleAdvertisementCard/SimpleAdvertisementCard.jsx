@@ -3,9 +3,11 @@ import { MoreVertical } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProductCard from "../ProductCard/ProductCard";
+import { AdvertisementAPI } from "../../services/AdvertisementAPI";
+import toast from "react-hot-toast";
 
 function SimpleAdvertisementCard({
-  id,            
+  id,
   creationTime,
   products,
   onEdit,
@@ -13,7 +15,22 @@ function SimpleAdvertisementCard({
   isOwner = false,
 }) {
   const [showMenu, setShowMenu] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const handleDelete = async () => {
+    if (!onDelete) return;
+    try {
+      setLoading(true);
+      await AdvertisementAPI.delete(id);
+      toast.success("Anúncio deletado com sucesso!");
+      onDelete(id);
+    } catch (err) {
+      toast.error(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className={styles.userAdvertisementCard}>
@@ -23,6 +40,7 @@ function SimpleAdvertisementCard({
             className={styles.advertisementDropdown}
             onClick={() => setShowMenu((prev) => !prev)}
             aria-label="Abrir menu de opções"
+            disabled={loading}
           >
             <MoreVertical />
           </button>
@@ -30,14 +48,19 @@ function SimpleAdvertisementCard({
           {showMenu && (
             <div className={styles.dropdownMenu}>
               {onEdit && (
-                <button className={styles.dropdownMenuButton} onClick={onEdit}>
+                <button
+                  className={styles.dropdownMenuButton}
+                  onClick={onEdit}
+                  disabled={loading}
+                >
                   Editar
                 </button>
               )}
               {onDelete && (
                 <button
                   className={styles.dropdownMenuButton}
-                  onClick={() => onDelete(id)}
+                  onClick={handleDelete}
+                  disabled={loading}
                 >
                   Excluir
                 </button>

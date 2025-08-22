@@ -1,7 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import styles from "./ContactAdvertiserPage.module.css";
+import { AdvertisementAPI } from "../../services/AdvertisementAPI";
+import toast from "react-hot-toast";
 
 export default function ContactAdvertiserPage() {
   const { advertisementId } = useParams();
@@ -11,20 +12,16 @@ export default function ContactAdvertiserPage() {
   useEffect(() => {
     async function fetchAdvertiser() {
       try {
-        const token = localStorage.getItem("token");
-        const res = await axios.get(
-          `http://localhost:8080/api/v1/advertisements/${advertisementId}/advertiser`,
-          {
-            headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-          }
-        );
-        setAdvertiser(res.data);
+        setLoading(true);
+        const data = await AdvertisementAPI.getAdvertiserByAdvertisementId(advertisementId);
+        setAdvertiser(data);
       } catch (err) {
-        console.error("Erro ao buscar anunciante:", err);
+        toast.error(err.message || "Erro ao buscar anunciante.");
       } finally {
         setLoading(false);
       }
     }
+
     fetchAdvertiser();
   }, [advertisementId]);
 

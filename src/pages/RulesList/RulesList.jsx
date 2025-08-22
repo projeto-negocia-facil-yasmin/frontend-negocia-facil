@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { RuleAPI } from "../../services/ruleAPI";
+import { RuleAPI } from "../../services/RuleAPI";
 import { isAdmin } from "../../utils/auth";
 import toast from "react-hot-toast";
 import styles from "./RulesList.module.css";
@@ -17,19 +17,26 @@ export default function RulesList() {
       const data = await RuleAPI.getAll();
       setRules(data);
     } catch (error) {
-      console.error("Erro ao buscar regras:", error);
+      const msg = error?.response?.data?.message || error.message;
+      toast.error(msg);
     }
   };
 
   const deleteRule = async (id) => {
     if (!admin) return;
+
+    const toastId = `rule-delete-${id}`;
+
     try {
+      toast.loading("Excluindo regra...", { id: toastId });
+
       await RuleAPI.delete(id);
-      toast.success("Regra excluída com sucesso!", { id: `rule-deleted-${id}` });
+
+      toast.success("Regra excluída com sucesso!", { id: toastId });
       fetchRules();
     } catch (error) {
-      console.error("Erro ao deletar regra:", error);
-      toast.error("Erro ao deletar regra.");
+      const msg = error?.response?.data?.message || error.message;
+      toast.error(msg, { id: `${toastId}-error` });
     }
   };
 

@@ -27,8 +27,7 @@ function AdvertisementsPage() {
       setAdvertisements(data);
       setAllAdvertisements(data);
     } catch (err) {
-      toast.error("Erro ao carregar anúncios.");
-      console.error(err);
+      toast.error(err.message);
     }
   }
 
@@ -37,20 +36,13 @@ function AdvertisementsPage() {
       const data = await CategoryAPI.getAll();
       setCategories(data);
     } catch (err) {
-      toast.error("Erro ao carregar categorias.");
-      console.error(err);
+      toast.error(err.message);
     }
   }
 
-  const handleDelete = async (id) => {
-    try {
-      await AdvertisementAPI.delete(id);
-      await loadAdvertisements();
-      toast.success("Anúncio deletado com sucesso!");
-    } catch (error) {
-      toast.error("Erro ao deletar anúncio.");
-      console.error(error.message);
-    }
+  const handleDelete = (id) => {
+    setAdvertisements((prev) => prev.filter((ad) => ad.id !== id));
+    setAllAdvertisements((prev) => prev.filter((ad) => ad.id !== id));
   };
 
   const handleEdit = (id) => {

@@ -30,9 +30,17 @@ function ProductCard({
   const isAdvertisementPage = location.pathname.includes("/advertisement");
 
   useEffect(() => {
-    CategoryAPI.getAll()
-      .then(setCategories)
-      .catch(() => setCategories([]));
+    const loadCategories = async () => {
+      try {
+        const data = await CategoryAPI.getAll();
+        setCategories(Array.isArray(data) ? data : []);
+      } catch (error) {
+        toast.error(error.message || "Erro ao carregar categorias");
+        setCategories([]);
+      }
+    };
+
+    loadCategories();
   }, []);
 
   const categoryObj = categories.find((c) => c.id === categoryId);

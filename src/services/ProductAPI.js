@@ -9,10 +9,6 @@ export const ProductAPI = {
     const response = await api.get("/product/list");
     return response.data;
   },
-  getById: async (id) => {
-    const response = await api.get(`/product/get/${id}`);
-    return response.data;
-  },
   update: async (id, product) => {
     const response = await api.put(`/product/update/${id}`, product);
     return response.data;

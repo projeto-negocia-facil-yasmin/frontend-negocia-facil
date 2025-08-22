@@ -13,12 +13,14 @@
     min-width: 400px;
     max-width: 400px;
     row-gap: 4em;
-    padding: 2em;
+    padding: -20em;
     border-radius: 1em;
 }
 
 .title {
     width: 100%;
+    color: white;
+    text-align: center;
     font-size: larger;
     font-weight: bolder;
 }
@@ -28,7 +30,7 @@
     border: none;
     border-radius: 8px;
     font-weight: bold;
-    width: 24em;
+    width: 25em;
     font-size: medium;
     height: 24px;
 }
@@ -54,7 +56,7 @@
     color: #3498db;
     text-align: center;
     display: block;
-    margin-top: 1rem;
+    margin-top: -2rem;
     text-decoration: none;
 }
 

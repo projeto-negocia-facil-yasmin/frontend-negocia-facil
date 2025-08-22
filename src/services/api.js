@@ -15,22 +15,21 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    let message = "Erro desconhecido";
-
     if (error.response) {
       const data = error.response.data;
+
       if (typeof data === "string") {
-        message = data;
+        error.message = data;
       } else if (data.message) {
-        message = data.message;
+        error.message = data.message;
       } else {
-        message = Object.values(data).join(" ");
+        error.message = Object.values(data).join(" ");
       }
-    } else if (error.message) {
-      message = error.message;
+    } else {
+      error.message = "Erro desconhecido";
     }
 
-    return Promise.reject(new Error(message));
+    return Promise.reject(error);
   }
 );
 

@@ -21,4 +21,8 @@ export const AdvertisementAPI = {
     const response = await api.delete(`/advertisements/${id}`);
     return response.data;
   },
+  getAdvertiserByAdvertisementId: async (id) => {
+    const response = await api.get(`/advertisements/${id}/advertiser`);
+    return response.data;
+  },
 };
