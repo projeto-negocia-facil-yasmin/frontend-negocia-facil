@@ -37,7 +37,12 @@ export default function EditUserForm({ user, action, cancelPath }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const data = { ...formState, id: user.id };
+    const data = {
+      fullName: formState.fullName,
+      enrollmentNumber: formState.enrollmentNumber,
+      phone: formState.phone,
+      imgUrl: formState.imgUrl
+    };
     await action(data);
 
     if (loggedUser?.id === user.id && formState.imgUrl) {

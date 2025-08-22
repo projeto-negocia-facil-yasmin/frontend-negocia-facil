@@ -1,11 +1,11 @@
 import styles from "./Register.module.css";
 import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import toast from "react-hot-toast";
 import Button from "../../../components/Button/Button.jsx";
 import CloudinaryImageUpload from "../../../components/ImageUpload/CloudinaryImageUpload.jsx";
 import { AuthContext } from "../../../context/AuthContext";
+import { UserAPI } from "../../../services/UserAPI";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -33,36 +33,22 @@ export default function Register() {
     };
 
     try {
-      const registerRes = await axios.post("http://localhost:8080/auth/register", userData);
+      const suapRes = await UserAPI.authenticateSuap(userData);
+      const token = suapRes.token;
+      const roles = suapRes.roles ?? [];
+      const user = {
+        ...suapRes.user,
+        profileImage: suapRes.user.imgUrl || profileImage || "https://api.dicebear.com/9.x/bottts-neutral/svg?seed=Riley",
+      };
 
-      if (registerRes.status === 201 || registerRes.status === 200) {
-        const loginRes = await axios.post("http://localhost:8080/auth/login", { username, password });
+      login(token, roles, user);
+      toast.success("Cadastro e login SUAP realizados com sucesso!", { id: "register-success" });
 
-        const token = loginRes.data.accessToken;
-        const roles = loginRes.data.roles ?? [];
-
-        const userResponse = await axios.get("http://localhost:8080/api/v1/users/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        const userWithImage = {
-          ...userResponse.data,
-          profileImage: userResponse.data.imgUrl || "https://api.dicebear.com/9.x/bottts-neutral/svg?seed=Riley",
-        };
-
-        login(token, roles, userWithImage);
-
-        toast.success("Cadastro realizado com sucesso!", { id: "register-success" });
-
-        if (username.toLowerCase().endsWith("@ifpb.edu.br")) navigate("/admin");
-        else navigate("/user/products");
-      } else {
-        toast.error("Falha inesperada no cadastro.", { id: "register-failure" });
-      }
+      if (roles.includes("ADMIN")) navigate("/admin");
+      else navigate("/user/products");
     } catch (err) {
-      console.error("Erro ao cadastrar:", err);
-      const msg = err.response?.data?.message || err.response?.data || err.message || "Erro ao cadastrar";
-      toast.error(msg, { id: "register-error" });
+      console.error("Erro SUAP:", err);
+      toast.error(err.response?.data || "Falha na autenticação SUAP", { id: "register-error" });
     } finally {
       setLoading(false);
     }
